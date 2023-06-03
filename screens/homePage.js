@@ -4,6 +4,7 @@ import React , {useState} from "react";
 
 import { Button } from "react-native-elements";
 import DataEntry from "./dataEntry";
+import EditEmployee from "./testModal";
 import { useEffect } from "react";
 
 const HomePage = ({navigation}) => {
@@ -37,34 +38,37 @@ const HomePage = ({navigation}) => {
    })
 
     return (
-    <View style={styles.centeredView}>
-         <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-            //Alert.alert('Modal has been closed.');
-            setModalVisible(!modalVisible);
-            }}>
-            <View style={styles.centeredView}>
-                <DataEntry />
-                
-                <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}>
-                    <Text>Enter Data</Text>
-                </Pressable>
-            </View>
-        </Modal>
 
-        <Text>This is the home page</Text>
-        
-        <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={() => setModalVisible(true)}>
-            <Text style={styles.textStyle}>Add Data</Text>
-        </Pressable>
-    </View>
+      <View style={styles.leftView}>
+        <DataEntry />
+          {/* <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+              setModalVisible(!modalVisible);
+              }}>
+              <View style={styles.centeredView}>
+                  <DataEntry />
+                  
+                  <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => {
+                        setModalVisible(!modalVisible)
+                        console.log('This worked: ')
+                        }}>
+                          
+                      <Text>Enter Data</Text>
+                  </Pressable>
+              </View>
+          </Modal> */}
+          
+          {/* <Pressable
+              style={[styles.button, styles.buttonOpen]}
+              onPress={() => setModalVisible(true)}>
+              <Text style={styles.textStyle}>Add Data</Text>
+          </Pressable> */}
+      </View>
     )
 }
 
@@ -77,6 +81,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 22,
+      },
+      leftView: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'bottom',
+        margin: 22,
+        //borderWidth: 1,
       },
       modalView: {
         margin: 20,

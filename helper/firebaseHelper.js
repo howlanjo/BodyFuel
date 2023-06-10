@@ -29,18 +29,18 @@ export function storeBodyFuelUser(item) {
 
 export function storeBodyFuelDataset(key, item) {
   const db = getDatabase();
-  const reference = ref(db, `bodyfuel/howlanjo/workoutData/${key}`)
+  const reference = ref(db, `bodyfuel/${uid}/workoutData/${key}`)
   push(reference, item)
 }
 
-export function setDataLister(key) {
-  console.log("setDataListener called");
-  const db = getDatabase();
-  const reference = ref(db, `bodyfuel/howlanjo/${key}`);
-  onValue(reference, (snapshot) => {
-    console.log("data listener fires up with: ", snapshot);
-  });
-}
+// export function setDataLister(key) {
+//   console.log("setDataListener called");
+//   const db = getDatabase();
+//   const reference = ref(db, `bodyfuel/howlanjo/${key}`);
+//   onValue(reference, (snapshot) => {
+//     console.log("data listener fires up with: ", snapshot);
+//   });
+// }
 
 export function setupBodyFuelListener(updateFunc) {
   console.log("uid: ", uid)

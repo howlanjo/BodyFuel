@@ -1,17 +1,37 @@
 import { FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Image, ListItem } from "react-native-elements";
 import React , {useState} from "react";
+import { initBodyFuelDB, setupBodyFuelListener, storeBodyFuelItem } from "../helper/firebaseHelper";
 
 import { Button } from "react-native-elements";
 import DataEntry from "./dataEntry";
 import EditEmployee from "./testModal";
 import { useEffect } from "react";
 
-const HomePage = ({navigation}) => {
+const HomePage = ({navigation, route}) => {
     const [modalVisible, setModalVisible] = useState(false);
+    const [userInfo, setUserInfo] = useState({})
+    const [uid, setUid] = useState('');
+
+    useEffect(() => {
+
+      console.log("You should only see this once. ", route.params)
+
+      if(route.params?.uid != 'undefined'){
+        setUid(route.params.uid)
+        console.log("route.params.uid: ", route.params.uid)
+        console.log("uid: ", uid)
+        
+      }
+      setupBodyFuelListener((userData) => {
+          console.log("Initial findings: ", userData);
+          setUserInfo(userData)
+      });
+
+  
+    }, [])
 
     useEffect(() =>{
-        
         navigation.setOptions({
            headerLeft: () => (
                <TouchableOpacity 
@@ -27,47 +47,18 @@ const HomePage = ({navigation}) => {
            headerRight: () => (
                <TouchableOpacity 
                onPress = {() => {
-                   navigation.navigate("User Profile")
+                   navigation.navigate("User Profile", {userInfo})  
                }}
            >
                <Text style={{color:'black', fontSize: 18}}>Profile</Text>
            </TouchableOpacity> 
            ),
-
        })
    })
 
     return (
-
       <View style={styles.leftView}>
         <DataEntry />
-          {/* <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-              setModalVisible(!modalVisible);
-              }}>
-              <View style={styles.centeredView}>
-                  <DataEntry />
-                  
-                  <Pressable
-                      style={[styles.button, styles.buttonClose]}
-                      onPress={() => {
-                        setModalVisible(!modalVisible)
-                        console.log('This worked: ')
-                        }}>
-                          
-                      <Text>Enter Data</Text>
-                  </Pressable>
-              </View>
-          </Modal> */}
-          
-          {/* <Pressable
-              style={[styles.button, styles.buttonOpen]}
-              onPress={() => setModalVisible(true)}>
-              <Text style={styles.textStyle}>Add Data</Text>
-          </Pressable> */}
       </View>
     )
 }
@@ -87,7 +78,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'bottom',
         margin: 22,
-        //borderWidth: 1,
       },
       modalView: {
         margin: 20,

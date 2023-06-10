@@ -5,30 +5,17 @@ import React , {useState} from "react";
 import { Button } from "react-native-elements";
 import { useEffect } from "react";
 
-const UserProfile = ({navigation}) => {
-    //const [videos, setVideos] = useState([]);
-
-    // useEffect(() => {
-    //     getVideos((data) => {
-    //         console.log("received: ", data)
-    //         setVideos(data.items);
-    //     });
-    // }, []);
-
-    // return (
-    //     <View>
-    //         <FlatList
-    //             data={videos}
-    //             keyExtractor={(item) => item.id.videoId}
-    //             extraData={videos}
-    //             renderItem={renderVideo} // index, item
-    //         />
-    //     </View>
-    // )
-
+const UserProfile = ({navigation, route}) => {
+    console.log("looking for this", route.params.userInfo[0].firstName)
     return (
+        
         <View>
-            <Text>This is the home page</Text>
+            <Text>This is the user Profile</Text>
+            <Text>First Name {route.params.userInfo[0].firstName}</Text>
+            <Text>Last Name {route.params.userInfo[0].lastName}</Text>
+            <Text>Username {route.params.userInfo[0].username}</Text>
+            <Text>Bio {route.params.userInfo[0].bio}</Text>
+            <Text>Gender {route.params.userInfo[0].gender}</Text>
         </View>
     )
 }

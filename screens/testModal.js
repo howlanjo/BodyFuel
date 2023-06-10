@@ -2,9 +2,8 @@ import {Alert, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 
 import { Input } from "react-native-elements";
-import { storeBodyFuelDataset } from '../helper/firebaseHelper';
 
-function DataEntry(props) {
+function EditEmployee(props) {
     const [modalVisible, setModalVisible] = useState(false);
 
     const [dateInput, setDateInput] = useState("")
@@ -12,14 +11,6 @@ function DataEntry(props) {
     const [waterInput, setWaterInput] = useState("");
     const [foodInput, setFoodInput] = useState("");
     const [sleepInput, setSleepInput] = useState("");
-
-    const saveAndStoreData = () => {
-      storeBodyFuelDataset(dateInput, {
-        "date": dateInput, "weight": weightInput,
-        "water": waterInput, "food": foodInput, "sleep": sleepInput
-    })
-      
-    }
 
   return (
     <View style={styles.centeredView}>
@@ -73,11 +64,7 @@ function DataEntry(props) {
             
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={
-                () => {setModalVisible(!modalVisible)
-                saveAndStoreData()
-              }
-              }>
+              onPress={() => setModalVisible(!modalVisible)}>
               <Text style={styles.textStyle}>Save</Text>
             </Pressable>
 
@@ -143,4 +130,4 @@ const styles = StyleSheet.create({
 },
 });
 
-export default DataEntry;
+export default EditEmployee;

@@ -6,7 +6,7 @@ import {
     ProgressChart,
     StackedBarChart
 } from "react-native-chart-kit";
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useEffect, useState } from "react";
 
 const WorkoutGraph = (inData) => {
@@ -71,17 +71,34 @@ const WorkoutGraph = (inData) => {
             borderRadius: 16
             }}
         />
-        <TouchableOpacity>
-            <Text style={styles.buttonLabel}>Sleep</Text>
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={
+                    () => {console.log("Sleep Pressed")
+                }
+                }>
+                <Text style={styles.textStyle}>Sleep</Text>
+            </Pressable>
 
-        <TouchableOpacity>
-            <Text style={styles.buttonLabel}>Water</Text>
-        </TouchableOpacity>
+            <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={
+                    () => {console.log("Water Pressed")
+                }
+                }>
+                <Text style={styles.textStyle}>Water</Text>
+            </Pressable>
 
-        <TouchableOpacity>
-            <Text style={styles.buttonLabel}>Food</Text>
-        </TouchableOpacity>
+            <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={
+                    () => {console.log("Food Pressed")
+                }
+                }>
+                <Text style={styles.textStyle}>Food</Text>
+            </Pressable>
+        </View>
     </View>
     )
 }
@@ -94,8 +111,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#3399ff',
         fontSize: 22,
         fontWeight: 'bold',
-        margin: 5
-    }
+        margin: 5,
+        color: 'white',
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+      },
+      buttonOpen: {
+        backgroundColor: '#F194FF',
+      },
 });
 
 export default WorkoutGraph;

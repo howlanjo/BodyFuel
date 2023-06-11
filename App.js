@@ -20,7 +20,7 @@ export default function App() {
         />
         <Stack.Screen name='Home Page' 
         component={HomePage}  
-        options={{title: "User Feed"}}
+        options={{title: "User Home"}}
         />
         <Stack.Screen name='User Profile' 
         component={UserProfile}  

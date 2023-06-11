@@ -25,7 +25,8 @@ function DataEntry(props) {
     }
 
   return (
-    <View style={styles.centeredView}>
+    <View style={[styles.centeredView, {paddingBottom: 10, paddingLeft: 10}]}>
+      
       <Modal
         animationType="slide"
         transparent={true}
@@ -34,13 +35,20 @@ function DataEntry(props) {
           Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+        <View style={[styles.centeredView]}>
 
-            <Text style={styles.modalText}>Log Data</Text>
+          <View style={[styles.modalView, {paddingBottom: 15, alignItems: 'stretch'}]}>
+
+            <View style={{alignItems: 'flex-end', justifyContent: 'flex-end', flexDirection: 'row'}}>
+              <Pressable
+                style={[styles.button]}
+                onPress={() => setModalVisible(false)}>
+                <Text style={[styles.textStyle, {color: 'black', fontSize: 24}]}>x</Text>
+              </Pressable>
+            </View>
 
             <MaskInput
-              style={styles.numberField}
+              style={[styles.numberField, {paddingLeft:10, paddingBottom: 10}]}
               value={dateInput}
               onChangeText={(masked, unmasked) => {
                 setDateInput(unmasked); // you can use the unmasked value as well
@@ -51,13 +59,6 @@ function DataEntry(props) {
               }}
               mask={[/\d/, /\d/, '/', /\d/, /\d/, '/',/\d/, /\d/, /\d/, /\d/]}
             />
-
-            {/* <Input style={styles.numberField}
-            placeholder="Enter Date"
-            value={dateInput}
-            onChangeText={setDateInput}
-            keyboardType="numeric"
-            /> */}
 
             <Input style={styles.numberField}
             placeholder="Enter Weight"
@@ -94,7 +95,7 @@ function DataEntry(props) {
                 saveAndStoreData()
               }
               }>
-              <Text style={styles.textStyle}>Save</Text>
+              <Text style={styles.textStyle}>Log Data</Text>
             </Pressable>
 
           </View>
@@ -114,13 +115,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginTop: 22,
+    //backgroundColor: 'blue'
   },
   modalView: {
-    margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 15,
+    //padding: 15,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,   
     marginRight: 5,  
     color: 'black',
+    fontSize: 20
 },
 });
 

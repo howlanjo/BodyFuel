@@ -6,7 +6,7 @@ import { Button } from "react-native-elements";
 import { useEffect } from "react";
 
 const UserProfile = ({navigation, route}) => {
-    console.log("looking for this", route.params.userInfo[0].firstName)
+    console.log("looking for this", route.params.userInfo)
     return (
         
         <View>

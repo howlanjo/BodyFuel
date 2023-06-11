@@ -1,5 +1,5 @@
 import {FirebaseApp, initializeApp} from "firebase/app"
-import {getDatabase, onValue, push, ref, remove, set, update,} from "firebase/database"
+import {getDatabase, onValue, push, ref, remove, set, update} from "firebase/database"
 
 import { firebaseConfig } from "./firebaseConfig";
 
@@ -13,6 +13,28 @@ export function writeData(key, data) {
   const db = getDatabase();
   const reference = ref(db, `bodyfuel/howlanjo/${key}`);
   set(reference, data);
+}
+
+export function getBodyFuelWorkoutData(updateFunc) {
+  const db = getDatabase();
+  const reference = ref(db, `bodyfuel/${uid}/workoutData`);
+  onValue(reference, (snapshot) => {
+    //const data = snapshot.val();
+    const fbObject = snapshot.val();
+    const newArr = [];
+
+    //console.log("fbObject: ", fbObject)
+
+    // Object.keys(fbObject).map((key, index) => {
+    //     newArr.push({...fbObject[key], id:key});
+    // });
+
+    updateFunc(fbObject);
+
+    //console.log("newArr: ", newArr)
+    return snapshot
+    //return data;
+  })
 }
 
 export function storeBodyFuelItem(item) {
@@ -77,7 +99,7 @@ export function updateBodyFuelDataset(item){
   const key = item.date;
   //delete item.date;
   const db = getDatabase()
-  const reference = ref(db, `bodyfuel/${uid}/workoutData${key}`);
+  const reference = ref(db, `bodyfuel/${uid}/workoutData/${key}`);
   set(reference, item);
 }
 

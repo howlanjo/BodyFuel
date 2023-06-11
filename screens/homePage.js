@@ -1,17 +1,21 @@
 import { FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Image, ListItem } from "react-native-elements";
 import React , {useState} from "react";
-import { initBodyFuelDB, setupBodyFuelListener, storeBodyFuelItem } from "../helper/firebaseHelper";
+import { getBodyFuelWorkoutData, initBodyFuelDB, setupBodyFuelListener, storeBodyFuelItem } from "../helper/firebaseHelper";
 
 import { Button } from "react-native-elements";
 import DataEntry from "./dataEntry";
 import EditEmployee from "./testModal";
+import WorkoutGraph from "./workoutGraph";
+import { organizeRawData } from "../helper/dataOrganization";
 import { useEffect } from "react";
 
 const HomePage = ({navigation, route}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [userInfo, setUserInfo] = useState({})
     const [uid, setUid] = useState('');
+    const [workoutData, setWorkoutData] = useState([]);
+    const [weightData, setWeightData] = useState([]);
 
     useEffect(() => {
 
@@ -28,6 +32,12 @@ const HomePage = ({navigation, route}) => {
           setUserInfo(userData)
       });
 
+      getBodyFuelWorkoutData((workoutDataFromDB) => {
+        console.log("workoutDataFromDB: ", workoutDataFromDB);
+        setWorkoutData(workoutDataFromDB)
+        w = organizeRawData(workoutDataFromDB)
+        setWeightData(w)
+      });
   
     }, [])
 
@@ -58,6 +68,7 @@ const HomePage = ({navigation, route}) => {
 
     return (
       <View style={styles.leftView}>
+        <WorkoutGraph data={weightData}/>
         <DataEntry />
       </View>
     )
@@ -77,7 +88,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'bottom',
-        margin: 22,
+        margin: 10,
       },
       modalView: {
         margin: 20,

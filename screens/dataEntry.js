@@ -1,13 +1,16 @@
-import {Alert, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Alert, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 
 import { Input } from "react-native-elements";
+import MaskInput from 'react-native-mask-input';
+import { pad } from '../helper/dataOrganization';
 import { storeBodyFuelDataset } from '../helper/firebaseHelper';
 
 function DataEntry(props) {
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [dateInput, setDateInput] = useState("")
+    let d = new Date().toLocaleDateString().split('/')
+    const [dateInput, setDateInput] = useState(`${pad(d[0], 2)}${pad(d[1], 2)}${d[2]}`)
     const [weightInput, setWeightInput] = useState("");
     const [waterInput, setWaterInput] = useState("");
     const [foodInput, setFoodInput] = useState("");
@@ -18,7 +21,7 @@ function DataEntry(props) {
         "date": dateInput, "weight": weightInput,
         "water": waterInput, "food": foodInput, "sleep": sleepInput
     })
-      
+
     }
 
   return (
@@ -36,12 +39,25 @@ function DataEntry(props) {
 
             <Text style={styles.modalText}>Log Data</Text>
 
-            <Input style={styles.numberField}
+            <MaskInput
+              style={styles.numberField}
+              value={dateInput}
+              onChangeText={(masked, unmasked) => {
+                setDateInput(unmasked); // you can use the unmasked value as well
+
+                // assuming you typed "9" all the way:
+                console.log(masked); // (99) 99999-9999
+                console.log(unmasked); // 99999999999
+              }}
+              mask={[/\d/, /\d/, '/', /\d/, /\d/, '/',/\d/, /\d/, /\d/, /\d/]}
+            />
+
+            {/* <Input style={styles.numberField}
             placeholder="Enter Date"
             value={dateInput}
             onChangeText={setDateInput}
             keyboardType="numeric"
-            />
+            /> */}
 
             <Input style={styles.numberField}
             placeholder="Enter Weight"

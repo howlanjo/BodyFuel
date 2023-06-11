@@ -1,12 +1,20 @@
-import {FirebaseApp, initializeApp} from "firebase/app"
-import {getDatabase, onValue, push, ref, remove, set, update} from "firebase/database"
+import { FirebaseApp, initializeApp } from "firebase/app";
+import {
+  getDatabase,
+  onValue,
+  push,
+  ref,
+  remove,
+  set,
+  update,
+} from "firebase/database";
 
 import { firebaseConfig } from "./firebaseConfig";
 
-let uid = "UAFe0fQZswcPoXX1IBm8GwOQ5MZ2"
+let uid = "UAFe0fQZswcPoXX1IBm8GwOQ5MZ2";
 
 export function initBodyFuelDB() {
-  initializeApp(firebaseConfig)
+  initializeApp(firebaseConfig);
 }
 
 export function writeData(key, data) {
@@ -32,27 +40,27 @@ export function getBodyFuelWorkoutData(updateFunc) {
     updateFunc(fbObject);
 
     //console.log("newArr: ", newArr)
-    return snapshot
+    return snapshot;
     //return data;
-  })
+  });
 }
 
 export function storeBodyFuelItem(item) {
   const db = getDatabase();
-  const reference = ref(db, "bodyfuel/howlanjo/")
-  push(reference, item)
+  const reference = ref(db, "bodyfuel/howlanjo/");
+  push(reference, item);
 }
 
 export function storeBodyFuelUser(item) {
   const db = getDatabase();
-  const reference = ref(db, "bodyfuel/howlanjo/")
-  push(reference, item)
+  const reference = ref(db, "bodyfuel/howlanjo/");
+  push(reference, item);
 }
 
 export function storeBodyFuelDataset(key, item) {
   const db = getDatabase();
-  const reference = ref(db, `bodyfuel/${uid}/workoutData/${key}`)
-  push(reference, item)
+  const reference = ref(db, `bodyfuel/${uid}/workoutData/${key}`);
+  push(reference, item);
 }
 
 // export function setDataLister(key) {
@@ -65,48 +73,50 @@ export function storeBodyFuelDataset(key, item) {
 // }
 
 export function setupBodyFuelListener(updateFunc) {
-  console.log("uid: ", uid)
+  console.log("uid: ", uid);
   const db = getDatabase();
   const reference = ref(db, `bodyfuel/${uid}`);
-  onValue( reference, (snapshot) =>{
+  onValue(reference, (snapshot) => {
     console.log("setupBodyFuelListener fires up with: ", snapshot);
 
-    if(snapshot?.val()){
+    if (snapshot?.val()) {
       const fbObject = snapshot.val();
       const newArr = [];
 
       Object.keys(fbObject).map((key, index) => {
-          newArr.push({...fbObject[key], id:key});
+        newArr.push({ ...fbObject[key], id: key });
       });
       updateFunc(newArr);
-      return snapshot
+      return snapshot;
     } else {
-      updateBodyFuelUserData(
-        {id: uid, userInfo: {
-        username: 'howlanjo', 
-        password: 'password', 
-        firstName: "John", 
-        lastName: "Howland", 
-        bio: "This is the bio", 
-        gender: "This is the gender"}})
+      updateBodyFuelUserData({
+        id: uid,
+        userInfo: {
+          username: "howlanjo",
+          password: "password",
+          firstName: "John",
+          lastName: "Howland",
+          bio: "This is the bio",
+          gender: "This is the gender",
+        },
+      });
       updateFunc([]);
     }
-  })
+  });
 }
 
-
-export function updateBodyFuelDataset(item){
+export function updateBodyFuelDataset(item) {
   const key = item.date;
   //delete item.date;
-  const db = getDatabase()
+  const db = getDatabase();
   const reference = ref(db, `bodyfuel/${uid}/workoutData/${key}`);
   set(reference, item);
 }
 
-export function updateBodyFuelUserData(item){
+export function updateBodyFuelUserData(item) {
   const key = item.id;
-  delete item.id
-  const db = getDatabase()
+  delete item.id;
+  const db = getDatabase();
   const reference = ref(db, `bodyfuel/${key}`);
   set(reference, item);
 }

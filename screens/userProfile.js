@@ -10,7 +10,7 @@ import { Image, Input, ListItem } from "react-native-elements";
 import React, { useState } from "react";
 
 const UserProfile = ({ navigation, route }) => {
-  console.log("looking for this", route.params.userInfo);
+  //console.log("looking for this", route.params.userInfo);
   return (
     <View style={styles.borders}>
       <View
@@ -27,11 +27,11 @@ const UserProfile = ({ navigation, route }) => {
         <View style={{ flexDirection: "column" }}>
           <TextInput
             style={{ borderWidth: 1 }}
-            value={route.params.userInfo[0].firstName}
+            value={route.params.userInfo.firstName}
           />
-          <TextInput value={route.params.userInfo[0].lastName} />
+          <TextInput value={route.params.userInfo.lastName} />
 
-          <TextInput value={route.params.userInfo[0].bio} />
+          <TextInput value={route.params.userInfo.bio} />
         </View>
       </View>
       <View style={[styles.borders, { flex: 3 }]}>

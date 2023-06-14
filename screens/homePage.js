@@ -1,4 +1,3 @@
-import { Image, ListItem } from "react-native-elements";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -6,15 +5,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import {
-  getBodyFuelWorkoutData,
-  initBodyFuelDB,
-  setupBodyFuelListener,
-  storeBodyFuelItem,
-} from "../helper/firebaseHelper";
 
 import DataEntry from "./dataEntry";
 import WorkoutGraph from "./workoutGraph";
+import {
+  getBodyFuelUserData
+} from "../helper/firebaseHelper";
 import { organizeRawData } from "../helper/dataOrganization";
 import { useEffect } from "react";
 
@@ -22,28 +18,15 @@ const HomePage = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [uid, setUid] = useState("");
-  const [workoutData, setWorkoutData] = useState([]);
-  const [weightData, setWeightData] = useState([]);
-
+ 
   useEffect(() => {
-    console.log("You should only see this once. ", route.params);
-
     if (route.params?.uid != "undefined") {
       setUid(route.params.uid);
-      console.log("route.params.uid: ", route.params.uid);
-      console.log("uid: ", uid);
     }
-    setupBodyFuelListener((userData) => {
-      console.log("Initial findings: ", userData);
+    getBodyFuelUserData((userData) => {
       setUserInfo(userData);
     });
-
-    getBodyFuelWorkoutData((workoutDataFromDB) => {
-      console.log("workoutDataFromDB: ", workoutDataFromDB);
-      setWorkoutData(workoutDataFromDB);
-      w = organizeRawData(workoutDataFromDB);
-      setWeightData(w);
-    });
+    
   }, []);
 
   useEffect(() => {
@@ -73,7 +56,7 @@ const HomePage = ({ navigation, route }) => {
 
   return (
     <View style={styles.leftView}>
-      <WorkoutGraph data={weightData} />
+      <WorkoutGraph userId = {uid}/>
       <DataEntry />
     </View>
   );

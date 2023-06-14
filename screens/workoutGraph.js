@@ -16,13 +16,36 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 
-const WorkoutGraph = (inData) => {
-  const [weight, setWeight] = useState([]);
+import { WorkoutDataBase } from "../helper/dataClass";
+import { organizeRawData } from "../helper/dataOrganization";
+import { setupBodyFuelListener } from "../helper/firebaseHelper";
+
+const WorkoutGraph = (userId) => {
+  const [weight, setWeight] = useState([1,1,1,1,1])
+  const [weightBackup, setWeightBackup] = useState([]);
+  const [water, setWater] = useState([2,2,2,2,2]);
+  const [sleep, setSleep] = useState([3,3,3,3,3]);
+  const [food, setFood] = useState([4,4,4,4,4]);
+  const [workoutData, setWorkoutData] = useState();
+  let userWorkoutData = new WorkoutDataBase();
 
   useEffect(() => {
-    console.log("WORKOUT DATA: ", inData.data);
-    setWeight(inData);
-  });
+    console.log("userId: ", userId)
+    if(userId){
+      setupBodyFuelListener((workoutDataFromDB) => {
+      console.log("workoutDataFromDB: ", workoutDataFromDB)
+      w = organizeRawData(workoutDataFromDB, userWorkoutData);
+
+      console.log("userWorkoutData: ", userWorkoutData.getWeightData())
+
+      setWeight(userWorkoutData.getWeightData())
+      setWater(userWorkoutData.getWaterData())
+      setSleep(userWorkoutData.getSleepData())
+      setFood(userWorkoutData.getFoodData())
+
+      });
+    }
+  }, [userId]);
 
   return (
     <View>
@@ -31,17 +54,18 @@ const WorkoutGraph = (inData) => {
           //labels: days,
           datasets: [
             {
-              data: [1, 7, 6, 4, 2, 5],
+              data: weight,
               strokeWidth: 2,
               color: (opacity = 1) => `rgba(255,0,0,${opacity})`, // optional
             },
             {
-              data: [2, 4, 6, 8, 8, 2],
+              data: sleep,
               strokeWidth: 2,
               color: (opacity = 1) => `rgba(0,0,102, ${opacity})`, // optional
+              
             },
             {
-              data: [9, 4, 7, 8, 2, 4],
+              data: food,
               strokeWidth: 2,
               color: (opacity = 1) => `rgba(0,102,0, ${opacity})`, // optional
             },
@@ -78,7 +102,15 @@ const WorkoutGraph = (inData) => {
         <Pressable
           style={[styles.button, styles.buttonOpen]}
           onPress={() => {
-            console.log("Sleep Pressed");
+            console.log("weight: ", weight)
+            if (weight.length){
+              setWeightBackup(weight)
+              setWeight([])
+            }
+            else{
+              setWeight(weightBackup)
+              setWeightBackup([])
+            }
           }}
         >
           <Text style={styles.textStyle}>Sleep</Text>

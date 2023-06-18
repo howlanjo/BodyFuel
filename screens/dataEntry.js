@@ -25,7 +25,7 @@ function DataEntry(props) {
   );
   const [weightInput, setWeightInput] = useState("");
   const [waterInput, setWaterInput] = useState("");
-  const [foodInput, setFoodInput] = useState("");
+  //const [foodInput, setFoodInput] = useState("");
   const [sleepInput, setSleepInput] = useState("");
 
   const [open, setOpen] = useState(false);

@@ -50,7 +50,7 @@ const UserProfile = ({ navigation, route }) => {
       </View>
       <View style={[styles.borders, { flex: 3 }]}>
         <View style={{margin: 10, flex: 1}}>
-          <Text>User Feed Here</Text>
+          <Text>Your Data Log:</Text>
           <UserFeed/>
         </View>
       </View>

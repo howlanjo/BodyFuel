@@ -6,7 +6,7 @@ import { CheckBox } from 'react-native-elements'
 //import CheckBox from '@react-native-community/checkbox';
 import { useEffect } from "react";
 
-const UserSettings = ({navigation}) => {
+const CameraScreen = ({navigation}) => {
     const [twitterIntegration, setTwitterIntegration] = useState(false)
     const [cameraIntgration, setCameraIntegration] = useState(false)
 
@@ -19,7 +19,7 @@ const UserSettings = ({navigation}) => {
             onPress={() => setTwitterIntegration(!twitterIntegration)}
         />
 
-<CheckBox
+        <CheckBox
             title='Post Picture'
             checked={cameraIntgration}
             onPress={() => setCameraIntegration(!cameraIntgration)}
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default UserSettings;
+export default CameraScreen;

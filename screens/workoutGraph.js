@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 
+import DropDownPicker from "react-native-dropdown-picker";
 import FirebaseContext from "../context/firebaseContext";
 import { LineChart } from "react-native-chart-kit";
 import { WorkoutDataBase } from "../helper/dataClass";
@@ -29,6 +30,15 @@ const WorkoutGraph = (userId) => {
   const [workoutData, setWorkoutData] = useState();
   let userWorkoutData = new WorkoutDataBase();
   const [refresh, setRefresh] = useState(false);
+
+  const [open, setOpen] = useState(false);
+  const [workoutList, setWorkoutList] = useState([
+    { label: "Bench", value: 1 },
+    { label: "Squat", value: 2 },
+    { label: "DeadLift", value: 3 },
+    { label: "Run", value: 4},
+  ]);
+  const [selectedWorkout, setSelectedWorkout] = useState(1);
 
   useEffect(() => {
     setRefresh(true);
@@ -69,27 +79,11 @@ const WorkoutGraph = (userId) => {
                 strokeWidth: 2,
                 color: (opacity = 1) => `rgba(255,0,0,${opacity})`, // optional
               },
-              {
-                data: sleep,
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(0,0,0, ${opacity})`, // optional
-                
-              },
-              {
-                data: food,
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(0,0,255, ${opacity})`, // optional
-              },
-              {
-                data: water,
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(0,255,0, ${opacity})`, // optional
-              },
             ],
           }}
 
           width={Dimensions.get("window").width - 20} // from react-native
-          height={400}
+          height={300}
 
           yAxisInterval={1} // optional, defaults to 1
           
@@ -117,9 +111,80 @@ const WorkoutGraph = (userId) => {
           }}
         />
       </Pressable>
+
+      <Pressable
+      onPress={() => {
+        setRefresh(true);
+        console.log("pressed")
+      }}
+      >
+        <LineChart
+          data={{
+            //labels: days,
+            datasets: [
+              {
+                data: sleep,
+                strokeWidth: 2,
+                color: (opacity = 1) => `rgba(0,0,0, ${opacity})`, // optional
+                
+              },
+              {
+                data: food,
+                strokeWidth: 2,
+                color: (opacity = 1) => `rgba(0,0,255, ${opacity})`, // optional
+              },
+              {
+                data: water,
+                strokeWidth: 2,
+                color: (opacity = 1) => `rgba(0,255,0, ${opacity})`, // optional
+              },
+            ],
+          }}
+
+          width={Dimensions.get("window").width - 20} // from react-native
+          height={300}
+
+          yAxisInterval={1} // optional, defaults to 1
+          
+          chartConfig={{
+            backgroundColor: "#a26a00",
+            backgroundGradientFrom: "#fb8c00",
+            backgroundGradientTo: "#ffa726",
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16,
+            },
+            propsForDots: {
+              r: "6",
+              strokeWidth: "2",
+              //stroke: "#ffa726"
+            },
+          }}
+
+          bezier
+          style={{
+            marginVertical: 8,
+            borderRadius: 16,
+          }}
+        />
+      </Pressable>
+
       <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+          <View style={{width: (Dimensions.get("window").width)/4 - 5}}>
+            <DropDownPicker
+              style={{ backgroundColor: '#F00'}}
+              open={open}
+              value={selectedWorkout}
+              items={workoutList}
+              setOpen={setOpen}
+              setValue={setSelectedWorkout}
+              setItems={setWorkoutList}        
+            />
+      </View>
         
-        <Pressable
+        {/* <Pressable
           style={[styles.button, {backgroundColor: 'red'}]}
           onPress={() => {
             console.log("weight: ", weight)
@@ -134,7 +199,7 @@ const WorkoutGraph = (userId) => {
           }}
         >
           <Text style={styles.textStyle}>Workout</Text>
-        </Pressable>
+        </Pressable> */}
 
         <Pressable
           style={[styles.button, {backgroundColor: 'green'}]}

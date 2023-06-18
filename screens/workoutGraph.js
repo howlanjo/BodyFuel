@@ -7,12 +7,15 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 
+import FirebaseContext from "../context/firebaseContext";
 import { LineChart } from "react-native-chart-kit";
 import { WorkoutDataBase } from "../helper/dataClass";
-import { getBodyFuelWorkoutData } from "../helper/firebaseHelper";
+//import { getBodyFuelWorkoutData } from "../helper/firebaseHelper";
 import { organizeRawData } from "../helper/dataOrganization";
+import { useContext } from "react";
 
 const WorkoutGraph = (userId) => {
+  const {fb} = useContext(FirebaseContext);
 
   const [weight, setWeight] = useState([0])
   const [weightBackup, setWeightBackup] = useState([]);
@@ -28,18 +31,15 @@ const WorkoutGraph = (userId) => {
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    console.log("userId: ", userId)
-    if(userId.userId != ""){
-      console.log("useEffect -- userId")
-      setRefresh(true);
-    }
-  }, [userId]);
+    setRefresh(true);
+
+  }, []);
 
   useEffect(() => {
     if(refresh == true){
       console.log("REFRESHED")
 
-      getBodyFuelWorkoutData((workoutDataFromDB) => {
+      fb.getBodyFuelWorkoutData((workoutDataFromDB) => {
 
         organizeRawData(workoutDataFromDB, userWorkoutData);
           

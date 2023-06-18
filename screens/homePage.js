@@ -7,23 +7,27 @@ import {
 } from "react-native";
 
 import DataEntry from "./dataEntry";
+import FirebaseContext from "../context/firebaseContext";
 import WorkoutGraph from "./workoutGraph";
 import {
   getBodyFuelUserData
 } from "../helper/firebaseHelper";
 import { organizeRawData } from "../helper/dataOrganization";
+import { useContext } from "react";
 import { useEffect } from "react";
 
 const HomePage = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-  const [uid, setUid] = useState("");
+  //const [uid, setUid] = useState("");
+  const {fb} = useContext(FirebaseContext)
  
   useEffect(() => {
     if (route.params?.uid != "undefined") {
-      setUid(route.params.uid);
+      fb.insertUid(route.params.uid)
     }
-    getBodyFuelUserData((userData) => {
+    
+    fb.getBodyFuelUserData((userData) => {
       setUserInfo(userData);
     });
     
@@ -56,7 +60,7 @@ const HomePage = ({ navigation, route }) => {
 
   return (
     <View style={styles.leftView}>
-      <WorkoutGraph userId = {uid}/>
+      <WorkoutGraph />
       <DataEntry />
     </View>
   );

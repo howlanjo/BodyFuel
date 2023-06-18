@@ -10,25 +10,18 @@ import {
 import { deleteBodyFuelDataset, getBodyFuelWorkoutData } from "../helper/firebaseHelper";
 import { useEffect, useState } from 'react';
 
+import FirebaseContext from '../context/firebaseContext';
 import React from 'react';
 import { WorkoutDataBase } from "../helper/dataClass";
+import { useContext } from 'react';
 
-// const DayLog = ({date, data}) => (
-//   <View style={styles.item}>
-//     <Text style={styles.title}>Date: {date}</Text>
-//     <Text>Workout: {data[0].weight}</Text>
-//     <Text>Sleep: {data[0].sleep}</Text>
-//     <Text>Water: {data[0].water}</Text>
-//     <Text>Food: {data[0].food}</Text>
-//   </View>
-// );
-
-const DayLog = ({index, item }) => {
+const DayLog = ({item, fb }) => {
+  
     return (
         <Pressable
             onLongPress={() => {
                 console.log("longPress! ", item)
-                deleteBodyFuelDataset(item)
+                fb.deleteBodyFuelDataset(item)
             }}
         >
         <View style={styles.item}>
@@ -38,15 +31,7 @@ const DayLog = ({index, item }) => {
             <Text>Water: {item.data[0].water}</Text>
             <Text>Food: {item.data[0].food}</Text>
         </View>
-        </Pressable>
-        // onLongPress={() => {
-        //     deleteReminder(item);
-        //     Toast.show(`Deleted ${item.text}!`, {
-        //         duration: Toast.durations.LONG,
-        //         animation: true,
-        //         hideOnPress: true,
-        //     });
-        // }}   
+        </Pressable>  
 )};
 
 const dbToArr = (inDB) => {
@@ -64,11 +49,12 @@ const dbToArr = (inDB) => {
 const UserFeed = () => {
     const [refresh, setRefresh] = useState(true);
     const [feedData, setFeedData] = useState([]);
+    const {fb} = useContext(FirebaseContext);
 
     useEffect(() => {
         if(refresh == true){
     
-          getBodyFuelWorkoutData((workoutDataFromDB) => {
+          fb.getBodyFuelWorkoutData((workoutDataFromDB) => {
             setFeedData(dbToArr(workoutDataFromDB))
           });
         }
@@ -79,8 +65,8 @@ const UserFeed = () => {
     <SafeAreaView style={styles.container}>
       <FlatList
         data={feedData}
-        renderItem={DayLog}
-        keyExtractor={item => item.date}
+        renderItem={({ item }) => <DayLog item={item} fb ={fb}/>}
+        keyExtractor={item => item.date }
       />
     </SafeAreaView>
   );

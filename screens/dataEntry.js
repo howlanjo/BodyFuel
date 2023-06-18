@@ -9,10 +9,12 @@ import {
 import React, { useState } from "react";
 
 import DropDownPicker from "react-native-dropdown-picker";
+import FirebaseContext from "../context/firebaseContext";
 import { Input } from "react-native-elements";
 import MaskInput from "react-native-mask-input";
 import { pad } from "../helper/dataOrganization";
 import { storeBodyFuelDataset } from "../helper/firebaseHelper";
+import { useContext } from "react";
 
 function DataEntry(props) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -28,8 +30,10 @@ function DataEntry(props) {
 
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const {fb} = useContext(FirebaseContext);
+
   const saveAndStoreData = () => {
-    storeBodyFuelDataset(dateInput, {
+    fb.storeBodyFuelDataset(dateInput, {
       date: dateInput,
       workoutType: selectedWorkout,
       weight: weightInput,

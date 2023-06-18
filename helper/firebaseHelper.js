@@ -1,110 +1,65 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
 import {
+  child,
+  get,
   getDatabase,
   onValue,
   push,
   ref,
   remove,
-  set,
-  update,
 } from "firebase/database";
 
 import { firebaseConfig } from "./firebaseConfig";
 
-let uid = "UAFe0fQZswcPoXX1IBm8GwOQ5MZ2";
+//let uid = "UAFe0fQZswcPoXX1IBm8GwOQ5MZ2";
 
-export function initBodyFuelDB() {
-  initializeApp(firebaseConfig);
-}
+export class FirebaseClass {
 
-export function writeData(key, data) {
-  const db = getDatabase();
-  const reference = ref(db, `bodyfuel/howlanjo/${key}`);
-  set(reference, data);
-}
-export function getBodyFuelUserData(updateFunc){
-  const db = getDatabase();
-  const reference = ref(db, `bodyfuel/${uid}/userInfo`);
-  onValue(reference, (snapshot) => {
-    const fbObject = snapshot.val();
-    updateFunc(fbObject);
-    return snapshot;
-  });
-}
+  constructor(uid){
+    this.uid = uid
+  }
 
-export function getBodyFuelWorkoutData(updateFunc) {
-  const db = getDatabase();
-  const reference = ref(db, `bodyfuel/${uid}/workoutData`);
-  onValue(reference, (snapshot) => {
-    //const data = snapshot.val();
-    const fbObject = snapshot.val();
-    const newArr = [];
+  insertUid(uid){
+    this.uid = uid
+  }
 
-    updateFunc(fbObject);
-    return snapshot;
-  });
-}
+  initBodyFuelDB() {
+    initializeApp(firebaseConfig);
+  }
 
-export function storeBodyFuelItem(item) {
-  const db = getDatabase();
-  const reference = ref(db, "bodyfuel/howlanjo/");
-  push(reference, item);
-}
-
-export function storeBodyFuelUser(item) {
-  const db = getDatabase();
-  const reference = ref(db, "bodyfuel/howlanjo/");
-  push(reference, item);
-}
-
-export function storeBodyFuelDataset(key, item) {
-  const db = getDatabase();
-  const reference = ref(db, `bodyfuel/${uid}/workoutData/${key}`);
-  push(reference, item);
-}
-
-// export function setDataLister(key) {
-//   console.log("setDataListener called");
-//   const db = getDatabase();
-//   const reference = ref(db, `bodyfuel/howlanjo/${key}`);
-//   onValue(reference, (snapshot) => {
-//     console.log("data listener fires up with: ", snapshot);
-//   });
-// }
-
-export function setupBodyFuelListener(updateFunc) {
-  console.log("uid: ", uid);
-  const db = getDatabase();
-  const reference = ref(db, `bodyfuel/${uid}/workoutData`);
-  onValue(reference, (snapshot) => {
-    console.log("setupBodyFuelListener fires up with: ", snapshot);
-    if(snapshot?.val()){
+  getBodyFuelUserData(updateFunc){
+    const db = getDatabase();
+    const reference = ref(db, `bodyfuel/${this.uid}/userInfo`);
+    onValue(reference, (snapshot) => {
       const fbObject = snapshot.val();
       updateFunc(fbObject);
-    } else {
-        updateFunc({});
-    }
+      return snapshot;
   });
 }
 
-export function updateBodyFuelDataset(item) {
-  const key = item.date;
-  //delete item.date;
-  const db = getDatabase();
-  const reference = ref(db, `bodyfuel/${uid}/workoutData/${key}`);
-  set(reference, item);
-}
+  getBodyFuelWorkoutData(updateFunc) {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `bodyfuel/${this.uid}/workoutData`)).then((snapshot) => {
+      console.log("CLASS!! -- setupBodyFuelListener fires up with: ", snapshot);
+      if(snapshot?.val()){
+        const fbObject = snapshot.val();
+        updateFunc(fbObject);
+      } else {
+          updateFunc({});
+      }
+    });
+  }
 
-export function updateBodyFuelUserData(item) {
-  const key = item.id;
-  delete item.id;
-  const db = getDatabase();
-  const reference = ref(db, `bodyfuel/${key}`);
-  set(reference, item);
-}
+  storeBodyFuelDataset(key, item) {
+    const db = getDatabase();
+    const reference = ref(db, `bodyfuel/${this.uid}/workoutData/${key}`);
+    push(reference, item);
+  }
 
-export function deleteBodyFuelDataset(item) {
-  const db = getDatabase();
-  const reference = ref(db, `bodyfuel/${uid}/workoutData/${item.date}`);
-  remove(reference);
-}
+  deleteBodyFuelDataset(item) {
+    const db = getDatabase();
+    const reference = ref(db, `bodyfuel/${this.uid}/workoutData/${item.date}`);
+    remove(reference);
+
+  }
+} 

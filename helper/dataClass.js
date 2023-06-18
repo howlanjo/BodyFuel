@@ -7,7 +7,6 @@ class DataEntriesPerDay {
 
     insertEntry(newEntry){
         this.dataArr.push(newEntry)
-
         this.$calculateMax()
     }
 
@@ -19,7 +18,6 @@ class DataEntriesPerDay {
                 this.max = num
             }
         }
-        //console.log("max: ", this.max)
     }
     
 }
@@ -42,9 +40,9 @@ export class WorkoutDataBase {
 
         for (const item of keys){
             we.insertEntry(newData[item].weight)
-            we.insertEntry(newData[item].food)
-            we.insertEntry(newData[item].sleep)
-            we.insertEntry(newData[item].water)
+            f.insertEntry(newData[item].food)
+            s.insertEntry(newData[item].sleep)
+            wa.insertEntry(newData[item].water)
         }
         this.weight.push(we)
         this.food.push(f)

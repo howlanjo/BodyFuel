@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
+import DropDownPicker from "react-native-dropdown-picker";
 import { Input } from "react-native-elements";
 import MaskInput from "react-native-mask-input";
 import { pad } from "../helper/dataOrganization";
@@ -25,15 +26,33 @@ function DataEntry(props) {
   const [foodInput, setFoodInput] = useState("");
   const [sleepInput, setSleepInput] = useState("");
 
+  const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
   const saveAndStoreData = () => {
     storeBodyFuelDataset(dateInput, {
       date: dateInput,
+      workoutType: selectedWorkout,
       weight: weightInput,
       water: waterInput,
-      food: foodInput,
+      food: selectedFood,
       sleep: sleepInput,
     });
   };
+  const [selectedFood, setSelectedFood] = useState();
+  const [foodItems, setFoodItems] = useState([
+    { label: "Poor", value: 1 },
+    { label: "Okay", value: 2 },
+    { label: "Good", value: 3 },
+    { label: "Great", value: 4},
+  ]);
+
+  const [selectedWorkout, setSelectedWorkout] = useState();
+  const [workoutList, setWorkoutList] = useState([
+    { label: "Bench", value: 1 },
+    { label: "Squat", value: 2 },
+    { label: "DeadLift", value: 3 },
+    { label: "Run", value: 4},
+  ]);
 
   return (
     <View style={[styles.centeredView, { paddingBottom: 10, paddingLeft: 10 }]}>
@@ -46,11 +65,11 @@ function DataEntry(props) {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={[styles.centeredView]}>
+        <View style={[styles.centeredView, ]}>
           <View
             style={[
               styles.modalView,
-              { paddingBottom: 15, alignItems: "stretch" },
+              { paddingBottom: 15},
             ]}
           >
             <View
@@ -88,14 +107,30 @@ function DataEntry(props) {
               mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
             />
 
-            <Input
-              style={styles.numberField}
-              placeholder="Enter Weight"
-              value={weightInput}
-              onChangeText={setWeightInput}
-              keyboardType="numeric"
-            />
+            <Text>Enter Workout</Text>
+            <View style={{flexDirection: 'row', width:'50%', zIndex: 4}}>
+              <DropDownPicker
+                open={open2}
+                value={selectedWorkout}
+                items={workoutList}
+                setOpen={setOpen2}
+                setValue={setSelectedWorkout}
+                setItems={setWorkoutList}
+                
+                style={{zIndex:3}} 
+                
+              />
 
+              <Input
+                style={[styles.numberField, {width: '50%'}]}
+                placeholder="Enter Weight"
+                value={weightInput}
+                onChangeText={setWeightInput}
+                keyboardType="numeric"
+                
+              />
+            </View>
+            
             <Input
               style={styles.numberField}
               placeholder="Enter Water"
@@ -103,14 +138,26 @@ function DataEntry(props) {
               onChangeText={setWaterInput}
               keyboardType="numeric"
             />
+            <View>
+            <Text>Select Food</Text>
+            <DropDownPicker
+              open={open}
+              value={selectedFood}
+              items={foodItems}
+              setOpen={setOpen}
+              setValue={setSelectedFood}
+              setItems={setFoodItems}
+              style={{zIndex:1}}
+            />
+            </View>
 
-            <Input
+            {/* <Input
               style={styles.numberField}
               placeholder="Enter Food" //#TODO
               value={foodInput}
               onChangeText={setFoodInput}
               keyboardType="numeric"
-            />
+            /> */}
 
             <Input
               style={styles.numberField}
@@ -153,7 +200,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     //padding: 15,
-    alignItems: "center",
+    //alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -162,8 +209,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: 300,
+    width: '90%',
   },
+
   button: {
     borderRadius: 20,
     padding: 10,

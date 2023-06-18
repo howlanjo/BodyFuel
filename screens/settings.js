@@ -1,22 +1,50 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Image, ListItem } from "react-native-elements";
+import { FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React , {useState} from "react";
 
 import { Button } from "react-native-elements";
+import { CheckBox } from 'react-native-elements'
+//import CheckBox from '@react-native-community/checkbox';
 import { useEffect } from "react";
 
 const UserSettings = ({navigation}) => {
+    const [twitterIntegration, setTwitterIntegration] = useState(false)
+    const [cameraIntgration, setCameraIntegration] = useState(false)
+
     return (
-        <View>
-            <Text>This is the home page</Text>
-        </View>
+        <View style={styles.container}>
+
+        <CheckBox
+            title='Post to Twitter'
+            checked={twitterIntegration}
+            onPress={() => setTwitterIntegration(!twitterIntegration)}
+        />
+
+<CheckBox
+            title='Post Picture'
+            checked={cameraIntgration}
+            onPress={() => setCameraIntegration(!cameraIntgration)}
+        />
+
+    </View>
     )
 }
 
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-    }
-});
+    container: {
+      flex: 1,
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+    },
+    checkboxContainer: {
+      flexDirection: 'row',
+      marginBottom: 20,
+    },
+    checkbox: {
+      alignSelf: 'center',
+    },
+    label: {
+      margin: 8,
+    },
+  });
 
 export default UserSettings;

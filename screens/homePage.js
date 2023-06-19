@@ -8,6 +8,7 @@ import {
 
 import DataEntry from "./dataEntry";
 import FirebaseContext from "../context/firebaseContext";
+import WorkoutDataContext from "../context/workoutContext";
 import WorkoutGraph from "./workoutGraph";
 import {
   getBodyFuelUserData
@@ -19,12 +20,17 @@ import { useEffect } from "react";
 const HomePage = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-  //const [uid, setUid] = useState("");
   const {fb} = useContext(FirebaseContext)
+  const {setupDbListener} = useContext(WorkoutDataContext)
+  
  
   useEffect(() => {
+
     if (route.params?.uid != "undefined") {
+      console.log("setting uid     ", route.params?.newRegister)
       fb.insertUid(route.params.uid)
+    
+      setupDbListener()
     }
     
     fb.getBodyFuelUserData((userData) => {

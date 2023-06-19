@@ -1,68 +1,98 @@
 class DataEntriesPerDay {
     constructor(date){
         this.date = date
-        this.dataArr = []
-        this.max = 0.0
+        this.bench = []
+        this.squat = []
+        this.deadLift = []
+        this.run = []
+        this.water = 0.0
+        this.sleep = 0.0
+        this.food = 0
     }
 
-    insertEntry(newEntry){
-        this.dataArr.push(newEntry)
-        this.$calculateMax()
+    insertEntry(bench, squat, deadLift, run, water, sleep, food){
+        console.log("bench, squat, deadLift, run, water, sleep, food ", bench, squat, deadLift, run, water, sleep, food)
+        
+        this.bench.push(bench)
+        this.squat.push(squat)
+        this.deadLift.push(deadLift)
+        this.run.push(run)
+        this.water += parseFloat(water)
+        this.sleep += parseFloat(sleep)
+        this.food = food
     }
-
-    $calculateMax(){
-        this.max = this.dataArr[0]
-
-        for (const num of this.dataArr){
-            if (num > this.max){
-                this.max = num
-            }
-        }
-    }
-    
 }
 
 export class WorkoutDataBase {
     constructor(){
-        this.weight = []
-        this.food = []
-        this.sleep = []
-        this.water = []
+        this.dataByDate = [] //@TODO This should be sorted
+    }
+
+    clearData(){
+        this.dataByDate = []
     }
 
     insertData(newData, date){
         console.log("newData: ", newData)
-        we = new DataEntriesPerDay(date)
-        f = new DataEntriesPerDay(date)
-        s = new DataEntriesPerDay(date)
-        wa = new DataEntriesPerDay(date)
         const keys = Object.keys(newData)
+        const temp = new DataEntriesPerDay(date)
 
         for (const item of keys){
-            we.insertEntry(newData[item].weight)
-            f.insertEntry(newData[item].food)
-            s.insertEntry(newData[item].sleep)
-            wa.insertEntry(newData[item].water)
+            console.log("item: ", item)
+            temp.insertEntry(newData[item].bench, 
+                newData[item].squat,
+                newData[item].deadLift,
+                newData[item].run, 
+                newData[item].water,
+                newData[item].sleep,
+                newData[item].food)
         }
-        this.weight.push(we)
-        this.food.push(f)
-        this.sleep.push(s)
-        this.water.push(wa)
+        this.dataByDate.push(temp)
     }
 
-    getWeightData(){
-        let weightArr = []
-        for (const item of this.weight){
-            weightArr.push(item.max)
+    getBenchData(){
+        const BenchArr = []
+        for (const item of this.dataByDate){
+            BenchArr.push(Math.max(...item.bench))
+        }
+        
+        return BenchArr
+    }
+
+    getSquatData(){
+        const SquatArr = []
+        for (const item of this.dataByDate){
+            SquatArr.push(Math.max(...item.squat))
         }
 
-        return weightArr
+        return SquatArr
+    }
+
+    getDeadLiftData(){
+        const deadLiftArr = []
+        for (const item of this.dataByDate){
+            deadLiftArr.push(Math.max(...item.deadLift))
+            //deadLiftArr.push(item.deadLift)
+        }
+
+        return deadLiftArr
+    }
+
+    getRunData(){
+        const runArr = []
+        for (const item of this.dataByDate){
+            runArr.push(Math.max(...item.run))
+        }
+
+        return runArr
     }
 
     getWaterData(){
         let waterArr = []
-        for (const item of this.water){
-            waterArr.push(item.max)
+        
+        for (const item of this.dataByDate){
+            console.log("Water: ", item.water)
+            waterArr.push(item.water)
         }
 
         return waterArr
@@ -70,8 +100,8 @@ export class WorkoutDataBase {
 
     getSleepData(){
         let sleepArr = []
-        for (const item of this.sleep){
-            sleepArr.push(item.max)
+        for (const item of this.dataByDate){
+            sleepArr.push(item.sleep)
         }
 
         return sleepArr
@@ -79,8 +109,8 @@ export class WorkoutDataBase {
 
     getFoodData(){
         let foodArr = []
-        for (const item of this.food){
-            foodArr.push(item.max)
+        for (const item of this.dataByDate){
+            foodArr.push(item.food)
         }
 
         return foodArr

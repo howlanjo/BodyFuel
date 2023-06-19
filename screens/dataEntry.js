@@ -1,9 +1,12 @@
 import {
   Alert,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
+  Touchable,
   View,
 } from "react-native";
 import React, { useState } from "react";
@@ -23,7 +26,7 @@ function DataEntry(props) {
   const [dateInput, setDateInput] = useState(
     `${pad(d[0], 2)}${pad(d[1], 2)}${d[2]}`
   );
-  const [weightInput, setWeightInput] = useState("");
+  const [workoutInput, setWorkoutInput] = useState("");
   const [waterInput, setWaterInput] = useState("");
   //const [foodInput, setFoodInput] = useState("");
   const [sleepInput, setSleepInput] = useState("");
@@ -35,11 +38,13 @@ function DataEntry(props) {
   const saveAndStoreData = () => {
     fb.storeBodyFuelDataset(dateInput, {
       date: dateInput,
-      workoutType: selectedWorkout,
-      weight: weightInput,
-      water: waterInput,
-      food: selectedFood,
-      sleep: sleepInput,
+      bench: (selectedWorkout == 1) ? workoutInput : 0,
+      squat: (selectedWorkout == 2) ? workoutInput : 0,
+      deadLift: (selectedWorkout == 3) ? workoutInput : 0,
+      run: (selectedWorkout == 4) ? workoutInput : 0,
+      water: (waterInput != "") ? waterInput : 0,
+      food: (selectedFood != undefined) ? selectedFood : 0,
+      sleep: (sleepInput != "") ? sleepInput : 0,
     });
   };
   const [selectedFood, setSelectedFood] = useState();
@@ -69,7 +74,14 @@ function DataEntry(props) {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={[styles.centeredView, ]}>
+        <KeyboardAvoidingView style={[styles.centeredView, ]}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}  
+        >
+          <Pressable
+          style = {{ ...StyleSheet.absoluteFillObject, top: 0, bottom: 0, right: 0, left: 0, opacity: 0.25, backgroundColor: 'black'}}
+          onPress = {() => {
+            setModalVisible(false);
+          }}/>        
           <View
             style={[
               styles.modalView,
@@ -90,7 +102,6 @@ function DataEntry(props) {
                 <Text
                   style={[styles.textStyle, { color: "black", fontSize: 24 }]}
                 >
-                  x
                 </Text>
               </Pressable>
             </View>
@@ -103,10 +114,6 @@ function DataEntry(props) {
               value={dateInput}
               onChangeText={(masked, unmasked) => {
                 setDateInput(unmasked); // you can use the unmasked value as well
-
-                // assuming you typed "9" all the way:
-                console.log(masked); // (99) 99999-9999
-                console.log(unmasked); // 99999999999
               }}
               mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
             />
@@ -128,8 +135,8 @@ function DataEntry(props) {
               <Input
                 style={[styles.numberField, {width: '50%'}]}
                 placeholder="Enter Weight"
-                value={weightInput}
-                onChangeText={setWeightInput}
+                value={workoutInput}
+                onChangeText={setWorkoutInput}
                 keyboardType="numeric"
                 
               />
@@ -181,7 +188,7 @@ function DataEntry(props) {
               <Text style={styles.textStyle}>Log Data</Text>
             </Pressable>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
       <Pressable
         style={[styles.button, styles.buttonOpen]}

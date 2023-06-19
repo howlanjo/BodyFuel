@@ -26,7 +26,7 @@ const DayLog = ({item, fb }) => {
         >
         <View style={styles.item}>
             <Text style={styles.title}>Date: {item.date}</Text>
-            <Text>Workout: {item.data[0].weight}</Text>
+            <Text>Bench: {item.data[0].bench}</Text>
             <Text>Sleep: {item.data[0].sleep}</Text>
             <Text>Water: {item.data[0].water}</Text>
             <Text>Food: {item.data[0].food}</Text>

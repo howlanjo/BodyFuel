@@ -18,8 +18,11 @@ import { useContext } from "react";
 const WorkoutGraph = (userId) => {
   const {fb} = useContext(FirebaseContext);
 
-  const [weight, setWeight] = useState([0])
-  const [weightBackup, setWeightBackup] = useState([]);
+  const [workout, setWorkout] = useState([0])
+  const [bench, setBench] = useState([0])
+  const [squat, setSquat] = useState([0])
+  const [deadLift, setDeadLift] = useState([0])
+  const [run, setRun] = useState([0])
   const [water, setWater] = useState([0]);
   const [waterBackup, setWaterBackup] = useState([]);
   const [sleep, setSleep] = useState([0]);
@@ -27,8 +30,7 @@ const WorkoutGraph = (userId) => {
   const [food, setFood] = useState([0]);
   const [foodBackup, setFoodBackup] = useState([]);
 
-  const [workoutData, setWorkoutData] = useState();
-  let userWorkoutData = new WorkoutDataBase();
+  const userWorkoutData = new WorkoutDataBase();
   const [refresh, setRefresh] = useState(false);
 
   const [open, setOpen] = useState(false);
@@ -47,27 +49,55 @@ const WorkoutGraph = (userId) => {
 
   useEffect(() => {
     if(refresh == true){
-      console.log("REFRESHED")
-
       fb.getBodyFuelWorkoutData((workoutDataFromDB) => {
 
-        organizeRawData(workoutDataFromDB, userWorkoutData);
-          
-        setWeight(userWorkoutData.getWeightData())
+        organizeRawData(workoutDataFromDB, userWorkoutData, 7);
+        
+        setBench(userWorkoutData.getBenchData())
+        setSquat(userWorkoutData.getSquatData())
+        setDeadLift(userWorkoutData.getDeadLiftData())
+        setRun(userWorkoutData.getRunData())
+  
         setWater(userWorkoutData.getWaterData())
         setSleep(userWorkoutData.getSleepData())
         setFood(userWorkoutData.getFoodData())
+        
         setRefresh(false)
       });
     }
   }, [refresh]);
+
+  useEffect(() => {
+      console.log("dropdown picker callback")
+      switch (selectedWorkout) {
+        case 1:
+          console.log("Case 1")
+          setWorkout(bench)
+          break;
+        case 2:
+          console.log("Case 2")
+          setWorkout(squat)
+          break;
+        case 3:
+          console.log("Case 3")
+          setWorkout(deadLift)
+          break;
+        case 4:
+          console.log("Case 4")
+          setWorkout(run)
+          break;
+
+        default:
+          setWeight([0])
+          break;
+      }
+  }, [selectedWorkout]);
 
   return (
     <View>
       <Pressable
       onPress={() => {
         setRefresh(true);
-        console.log("pressed")
       }}
       >
         <LineChart
@@ -75,7 +105,7 @@ const WorkoutGraph = (userId) => {
             //labels: days,
             datasets: [
               {
-                data: weight,
+                data: workout,
                 strokeWidth: 2,
                 color: (opacity = 1) => `rgba(255,0,0,${opacity})`, // optional
               },
@@ -91,7 +121,7 @@ const WorkoutGraph = (userId) => {
             backgroundColor: "#a26a00",
             backgroundGradientFrom: "#fb8c00",
             backgroundGradientTo: "#ffa726",
-            decimalPlaces: 2, // optional, defaults to 2dp
+            decimalPlaces: 1, // optional, defaults to 2dp
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             style: {
@@ -99,7 +129,7 @@ const WorkoutGraph = (userId) => {
             },
             propsForDots: {
               r: "6",
-              strokeWidth: "2",
+              //strokeWidth: "2",
               //stroke: "#ffa726"
             },
           }}
@@ -183,23 +213,6 @@ const WorkoutGraph = (userId) => {
               setItems={setWorkoutList}        
             />
       </View>
-        
-        {/* <Pressable
-          style={[styles.button, {backgroundColor: 'red'}]}
-          onPress={() => {
-            console.log("weight: ", weight)
-            if (weight.length){
-              setWeightBackup(weight)
-              setWeight([])
-            }
-            else{
-              setWeight(weightBackup)
-              setWeightBackup([])
-            }
-          }}
-        >
-          <Text style={styles.textStyle}>Workout</Text>
-        </Pressable> */}
 
         <Pressable
           style={[styles.button, {backgroundColor: 'green'}]}

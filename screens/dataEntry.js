@@ -23,7 +23,7 @@ function DataEntry(props) {
   const [dateInput, setDateInput] = useState(
     `${pad(d[0], 2)}${pad(d[1], 2)}${d[2]}`
   );
-  const [weightInput, setWeightInput] = useState("");
+  const [workoutInput, setWorkoutInput] = useState("");
   const [waterInput, setWaterInput] = useState("");
   //const [foodInput, setFoodInput] = useState("");
   const [sleepInput, setSleepInput] = useState("");
@@ -35,11 +35,13 @@ function DataEntry(props) {
   const saveAndStoreData = () => {
     fb.storeBodyFuelDataset(dateInput, {
       date: dateInput,
-      workoutType: selectedWorkout,
-      weight: weightInput,
-      water: waterInput,
-      food: selectedFood,
-      sleep: sleepInput,
+      bench: (selectedWorkout == 1) ? workoutInput : 0,
+      squat: (selectedWorkout == 2) ? workoutInput : 0,
+      deadLift: (selectedWorkout == 3) ? workoutInput : 0,
+      run: (selectedWorkout == 4) ? workoutInput : 0,
+      water: (waterInput != "") ? waterInput : 0,
+      food: (selectedFood != "") ? selectedFood : 0,
+      sleep: (sleepInput != "") ? sleepInput : 0,
     });
   };
   const [selectedFood, setSelectedFood] = useState();
@@ -128,8 +130,8 @@ function DataEntry(props) {
               <Input
                 style={[styles.numberField, {width: '50%'}]}
                 placeholder="Enter Weight"
-                value={weightInput}
-                onChangeText={setWeightInput}
+                value={workoutInput}
+                onChangeText={setWorkoutInput}
                 keyboardType="numeric"
                 
               />

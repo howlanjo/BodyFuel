@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import UserProfile from './screens/userProfile';
 import UserSettings from './screens/settings';
+import { WorkoutDataProvider } from './context/workoutContext';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function App() {
@@ -14,25 +15,28 @@ export default function App() {
 
   return (
     <FirebaseProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-        <Stack.Screen name='Login Screen' 
-          component={LoginScreen}  
-          />
-          <Stack.Screen name='Home Page' 
-          component={HomePage}  
-          options={{title: "User Home"}}
-          />
-          <Stack.Screen name='User Profile' 
-          component={UserProfile}  
-          options={{title: "User Profile"}}
-          />
-          <Stack.Screen name='User Settings' 
-          component={UserSettings}  
-          options={{title: "User Settings"}}
-          />
-          </Stack.Navigator>
-      </NavigationContainer>
+      <WorkoutDataProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+          <Stack.Screen name='Login Screen' 
+            component={LoginScreen}  
+            />
+            
+            <Stack.Screen name='Home Page' 
+            component={HomePage}  
+            options={{title: "User Home"}}
+            />
+            <Stack.Screen name='User Profile' 
+            component={UserProfile}  
+            options={{title: "User Profile"}}
+            />
+            <Stack.Screen name='User Settings' 
+            component={UserSettings}  
+            options={{title: "User Settings"}}
+            />
+            </Stack.Navigator>
+        </NavigationContainer>
+      </WorkoutDataProvider>
     </FirebaseProvider>
   );
 }

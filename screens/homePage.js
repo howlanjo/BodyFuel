@@ -19,7 +19,6 @@ import { useEffect } from "react";
 const HomePage = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-  //const [uid, setUid] = useState("");
   const {fb} = useContext(FirebaseContext)
  
   useEffect(() => {

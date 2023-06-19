@@ -41,16 +41,16 @@ const HomePage = ({ navigation, route }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (
-        <TouchableOpacity
-          onPress={() => {
-            console.log("Settings page");
-            navigation.navigate("User Settings");
-          }}
-        >
-          <Text style={{ color: "black", fontSize: 18 }}>Settings</Text>
-        </TouchableOpacity>
-      ),
+      // headerLeft: () => (
+      //   <TouchableOpacity
+      //     onPress={() => {
+      //       console.log("Settings page");
+      //       navigation.navigate("User Settings");
+      //     }}
+      //   >
+      //     <Text style={{ color: "black", fontSize: 18 }}>Settings</Text>
+      //   </TouchableOpacity>
+      // ),
 
       headerRight: () => (
         <TouchableOpacity

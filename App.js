@@ -30,10 +30,10 @@ export default function App() {
             component={UserProfile}  
             options={{title: "User Profile"}}
             />
-            <Stack.Screen name='User Settings' 
+            {/* <Stack.Screen name='User Settings' 
             component={UserSettings}  
             options={{title: "User Settings"}}
-            />
+            /> */}
             </Stack.Navigator>
         </NavigationContainer>
       </WorkoutDataProvider>

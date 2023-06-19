@@ -74,21 +74,19 @@ function DataEntry(props) {
           setModalVisible(!modalVisible);
         }}
       >
-        <KeyboardAvoidingView style={[styles.centeredView, ]}
+        <KeyboardAvoidingView style={styles.centeredView }
         behavior={Platform.OS === "ios" ? "padding" : "height"}  
         >
           <Pressable
           style = {{ ...StyleSheet.absoluteFillObject, top: 0, bottom: 0, right: 0, left: 0, opacity: 0.25, backgroundColor: 'black'}}
           onPress = {() => {
             setModalVisible(false);
-          }}/>        
+          }}/>       
+           
           <View
-            style={[
-              styles.modalView,
-              { paddingBottom: 15},
-            ]}
+            style={styles.modalView}
           >
-            <View
+            {/* <View
               style={{
                 alignItems: "flex-end",
                 justifyContent: "flex-end",
@@ -104,7 +102,7 @@ function DataEntry(props) {
                 >
                 </Text>
               </Pressable>
-            </View>
+            </View> */}
 
             <MaskInput
               style={[
@@ -162,14 +160,6 @@ function DataEntry(props) {
             />
             </View>
 
-            {/* <Input
-              style={styles.numberField}
-              placeholder="Enter Food" //#TODO
-              value={foodInput}
-              onChangeText={setFoodInput}
-              keyboardType="numeric"
-            /> */}
-
             <Input
               style={styles.numberField}
               placeholder="Enter Sleep (hr)"
@@ -179,7 +169,7 @@ function DataEntry(props) {
             />
 
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={[styles.button, {backgroundColor: "#2196F3", alignSelf: 'center'}]}
               onPress={() => {
                 setModalVisible(!modalVisible);
                 saveAndStoreData();
@@ -191,7 +181,7 @@ function DataEntry(props) {
         </KeyboardAvoidingView>
       </Modal>
       <Pressable
-        style={[styles.button, styles.buttonOpen]}
+        style={[styles.button]}
         onPress={() => setModalVisible(true)}
       >
         <Text style={styles.textStyle}>Enter Data</Text>
@@ -205,13 +195,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    //backgroundColor: 'blue'
   },
   modalView: {
     backgroundColor: "white",
+    paddingTop: 10,
+    paddingBottom: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
     borderRadius: 20,
-    //padding: 15,
-    //alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -228,21 +219,21 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
   },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-  },
+  // buttonOpen: {
+  //   backgroundColor: "#F194FF",
+  // },
+  // buttonClose: {
+  //   backgroundColor: "#2196F3",
+  // },
+  // textStyle: {
+  //   color: "white",
+  //   fontWeight: "bold",
+  //   textAlign: "center",
+  // },
+  // modalText: {
+  //   marginBottom: 15,
+  //   textAlign: "center",
+  // },
   numberField: {
     marginLeft: 5,
     marginRight: 5,

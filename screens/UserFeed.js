@@ -7,12 +7,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import { deleteBodyFuelDataset, getBodyFuelWorkoutData } from "../helper/firebaseHelper";
 import { useEffect, useState } from 'react';
 
 import FirebaseContext from '../context/firebaseContext';
 import React from 'react';
-import { WorkoutDataBase } from "../helper/dataClass";
+import WorkoutDataContext from '../context/workoutContext';
 import { useContext } from 'react';
 
 const DayLog = ({item, fb }) => {
@@ -21,7 +20,7 @@ const DayLog = ({item, fb }) => {
         <Pressable
             onLongPress={() => {
                 console.log("longPress! ", item)
-                fb.deleteBodyFuelDataset(item)
+                //fb.deleteBodyFuelDataset(item)
             }}
         >
         <View style={styles.item}>
@@ -50,13 +49,14 @@ const UserFeed = () => {
     const [refresh, setRefresh] = useState(true);
     const [feedData, setFeedData] = useState([]);
     const {fb} = useContext(FirebaseContext);
+    const {dbExport} = useContext(WorkoutDataContext);
 
     useEffect(() => {
         if(refresh == true){
-    
-          fb.getBodyFuelWorkoutData((workoutDataFromDB) => {
-            setFeedData(dbToArr(workoutDataFromDB))
-          });
+          console.log("Refresh")
+
+          setFeedData(dbToArr(dbExport));
+          
         }
       }, [refresh]);
 

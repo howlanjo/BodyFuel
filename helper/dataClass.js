@@ -11,6 +11,8 @@ class DataEntriesPerDay {
     }
 
     insertEntry(bench, squat, deadLift, run, water, sleep, food){
+        console.log("bench, squat, deadLift, run, water, sleep, food ", bench, squat, deadLift, run, water, sleep, food)
+        
         this.bench.push(bench)
         this.squat.push(squat)
         this.deadLift.push(deadLift)
@@ -26,12 +28,17 @@ export class WorkoutDataBase {
         this.dataByDate = [] //@TODO This should be sorted
     }
 
+    clearData(){
+        this.clearData = []
+    }
+
     insertData(newData, date){
         console.log("newData: ", newData)
         const keys = Object.keys(newData)
         const temp = new DataEntriesPerDay(date)
 
         for (const item of keys){
+            console.log("item: ", item)
             temp.insertEntry(newData[item].bench, 
                 newData[item].squat,
                 newData[item].deadLift,

@@ -8,30 +8,18 @@ import {
 import { useEffect, useState } from "react";
 
 import DropDownPicker from "react-native-dropdown-picker";
-import FirebaseContext from "../context/firebaseContext";
 import { LineChart } from "react-native-chart-kit";
-import { WorkoutDataBase } from "../helper/dataClass";
-//import { getBodyFuelWorkoutData } from "../helper/firebaseHelper";
-import { organizeRawData } from "../helper/dataOrganization";
+import WorkoutDataContext from "../context/workoutContext";
 import { useContext } from "react";
 
 const WorkoutGraph = (userId) => {
-  const {fb} = useContext(FirebaseContext);
+  const {alert, water, sleep, food, bench, squat, deadLift, run} = useContext(WorkoutDataContext)
 
   const [workout, setWorkout] = useState([0])
-  const [bench, setBench] = useState([0])
-  const [squat, setSquat] = useState([0])
-  const [deadLift, setDeadLift] = useState([0])
-  const [run, setRun] = useState([0])
-  const [water, setWater] = useState([0]);
-  const [waterBackup, setWaterBackup] = useState([]);
-  const [sleep, setSleep] = useState([0]);
-  const [sleepBackup, setSleepBackup] = useState([]);
-  const [food, setFood] = useState([0]);
-  const [foodBackup, setFoodBackup] = useState([]);
 
-  const userWorkoutData = new WorkoutDataBase();
-  const [refresh, setRefresh] = useState(false);
+  const [waterBackup, setWaterBackup] = useState([]);
+  const [sleepBackup, setSleepBackup] = useState([]);
+  const [foodBackup, setFoodBackup] = useState([]);
 
   const [open, setOpen] = useState(false);
   const [workoutList, setWorkoutList] = useState([
@@ -41,31 +29,6 @@ const WorkoutGraph = (userId) => {
     { label: "Run", value: 4},
   ]);
   const [selectedWorkout, setSelectedWorkout] = useState(1);
-
-  useEffect(() => {
-    setRefresh(true);
-
-  }, []);
-
-  useEffect(() => {
-    if(refresh == true){
-      fb.getBodyFuelWorkoutData((workoutDataFromDB) => {
-
-        organizeRawData(workoutDataFromDB, userWorkoutData, 7);
-        
-        setBench(userWorkoutData.getBenchData())
-        setSquat(userWorkoutData.getSquatData())
-        setDeadLift(userWorkoutData.getDeadLiftData())
-        setRun(userWorkoutData.getRunData())
-  
-        setWater(userWorkoutData.getWaterData())
-        setSleep(userWorkoutData.getSleepData())
-        setFood(userWorkoutData.getFoodData())
-        
-        setRefresh(false)
-      });
-    }
-  }, [refresh]);
 
   useEffect(() => {
       console.log("dropdown picker callback")
@@ -91,115 +54,101 @@ const WorkoutGraph = (userId) => {
           setWeight([0])
           break;
       }
-  }, [selectedWorkout]);
+  }, [selectedWorkout, alert]);
 
   return (
     <View>
-      <Pressable
-      onPress={() => {
-        setRefresh(true);
-      }}
-      >
-        <LineChart
-          data={{
-            //labels: days,
-            datasets: [
-              {
-                data: workout,
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(255,0,0,${opacity})`, // optional
-              },
-            ],
-          }}
-
-          width={Dimensions.get("window").width - 20} // from react-native
-          height={300}
-
-          yAxisInterval={1} // optional, defaults to 1
-          
-          chartConfig={{
-            backgroundColor: "#a26a00",
-            backgroundGradientFrom: "#fb8c00",
-            backgroundGradientTo: "#ffa726",
-            decimalPlaces: 1, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            style: {
-              borderRadius: 16,
+      <LineChart
+        data={{
+          //labels: days,
+          datasets: [
+            {
+              data: workout,
+              strokeWidth: 2,
+              color: (opacity = 1) => `rgba(255,0,0,${opacity})`, // optional
             },
-            propsForDots: {
-              r: "6",
-              //strokeWidth: "2",
-              //stroke: "#ffa726"
-            },
-          }}
+          ],
+        }}
 
-          bezier
-          style={{
-            marginVertical: 8,
+        width={Dimensions.get("window").width - 20} // from react-native
+        height={300}
+
+        yAxisInterval={1} // optional, defaults to 1
+        
+        chartConfig={{
+          backgroundColor: "#a26a00",
+          backgroundGradientFrom: "#fb8c00",
+          backgroundGradientTo: "#ffa726",
+          decimalPlaces: 1, // optional, defaults to 2dp
+          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          style: {
             borderRadius: 16,
-          }}
-        />
-      </Pressable>
+          },
+          propsForDots: {
+            r: "6",
+            //strokeWidth: "2",
+            //stroke: "#ffa726"
+          },
+        }}
 
-      <Pressable
-      onPress={() => {
-        setRefresh(true);
-        console.log("pressed")
-      }}
-      >
-        <LineChart
-          data={{
-            //labels: days,
-            datasets: [
-              {
-                data: sleep,
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(0,0,0, ${opacity})`, // optional
-                
-              },
-              {
-                data: food,
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(0,0,255, ${opacity})`, // optional
-              },
-              {
-                data: water,
-                strokeWidth: 2,
-                color: (opacity = 1) => `rgba(0,255,0, ${opacity})`, // optional
-              },
-            ],
-          }}
+        bezier
+        style={{
+          marginVertical: 8,
+          borderRadius: 16,
+        }}
+      />
+      <LineChart
+        data={{
+          //labels: days,
+          datasets: [
+            {
+              data: sleep,
+              strokeWidth: 2,
+              color: (opacity = 1) => `rgba(0,0,0, ${opacity})`, // optional
 
-          width={Dimensions.get("window").width - 20} // from react-native
-          height={300}
-
-          yAxisInterval={1} // optional, defaults to 1
-          
-          chartConfig={{
-            backgroundColor: "#a26a00",
-            backgroundGradientFrom: "#fb8c00",
-            backgroundGradientTo: "#ffa726",
-            decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            style: {
-              borderRadius: 16,
             },
-            propsForDots: {
-              r: "6",
-              strokeWidth: "2",
-              //stroke: "#ffa726"
+            {
+              data: food,
+              strokeWidth: 2,
+              color: (opacity = 1) => `rgba(0,0,255, ${opacity})`, // optional
             },
-          }}
+            {
+              data: water,
+              strokeWidth: 2,
+              color: (opacity = 1) => `rgba(0,255,0, ${opacity})`, // optional
+            },
+          ],
+        }}
 
-          bezier
-          style={{
-            marginVertical: 8,
+        width={Dimensions.get("window").width - 20} // from react-native
+        height={300}
+
+        yAxisInterval={1} // optional, defaults to 1
+        
+        chartConfig={{
+          backgroundColor: "#a26a00",
+          backgroundGradientFrom: "#fb8c00",
+          backgroundGradientTo: "#ffa726",
+          decimalPlaces: 2, // optional, defaults to 2dp
+          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          style: {
             borderRadius: 16,
-          }}
-        />
-      </Pressable>
+          },
+          propsForDots: {
+            r: "6",
+            strokeWidth: "2",
+            //stroke: "#ffa726"
+          },
+        }}
+
+        bezier
+        style={{
+          marginVertical: 8,
+          borderRadius: 16,
+        }}
+      />
 
       <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
           <View style={{width: (Dimensions.get("window").width)/4 - 5}}>
@@ -214,7 +163,7 @@ const WorkoutGraph = (userId) => {
             />
       </View>
 
-        <Pressable
+        {/* <Pressable
           style={[styles.button, {backgroundColor: 'green'}]}
           onPress={() => {
             console.log("water: ", water)
@@ -263,7 +212,7 @@ const WorkoutGraph = (userId) => {
           }}
         >
           <Text style={styles.textStyle}>Sleep</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
     </View>
   );

@@ -40,7 +40,7 @@ function DataEntry(props) {
       deadLift: (selectedWorkout == 3) ? workoutInput : 0,
       run: (selectedWorkout == 4) ? workoutInput : 0,
       water: (waterInput != "") ? waterInput : 0,
-      food: (selectedFood != "") ? selectedFood : 0,
+      food: (selectedFood != undefined) ? selectedFood : 0,
       sleep: (sleepInput != "") ? sleepInput : 0,
     });
   };

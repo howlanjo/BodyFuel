@@ -7,11 +7,10 @@ import {
   push,
   ref,
   remove,
+  set,
 } from "firebase/database";
 
 import { firebaseConfig } from "./firebaseConfig";
-
-//let uid = "UAFe0fQZswcPoXX1IBm8GwOQ5MZ2";
 
 export class FirebaseClass {
 
@@ -50,10 +49,31 @@ export class FirebaseClass {
     });
   }
 
+  SetupBodyFuelWorkoutDataListner(updateFunc){
+    console.log("You are setting up the listener right now")
+    const db = getDatabase();
+    const reference = ref(db, `bodyfuel/${this.uid}/workoutData`);
+    onValue(reference, (snapshot) => {
+      console.log("Just inside onValue")
+      const fbObject = snapshot.val();
+      console.log("Got snapshot")
+      updateFunc(fbObject);
+      console.log("updated the func")
+      return snapshot;
+  });
+}
+
   storeBodyFuelDataset(key, item) {
+    console.log("key: ", key)
+    console.log("item: ", item)
     const db = getDatabase();
     const reference = ref(db, `bodyfuel/${this.uid}/workoutData/${key}`);
-    push(reference, item);
+    console.log("Before push")
+    push(reference, item)
+    .then(() => {
+      console.log("Set wrote successfully")
+    })
+    console.log("After push")
   }
 
   deleteBodyFuelDataset(item) {

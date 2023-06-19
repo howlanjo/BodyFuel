@@ -9,7 +9,7 @@ const WorkoutDataContext = createContext();
 export function WorkoutDataProvider({children}) {
     const {fb} = useContext(FirebaseContext);
     const workoutData = new WorkoutDataBase();
-    const [alert, setAlert] = useState(false);
+    
     const [bench, setBench] = useState([0])
     const [squat, setSquat] = useState([0])
     const [deadLift, setDeadLift] = useState([0])
@@ -23,6 +23,7 @@ export function WorkoutDataProvider({children}) {
     const setupDbListener = () => {
         fb.SetupBodyFuelWorkoutDataListner((workoutDataFromDB) => {
             setDbExport(workoutDataFromDB);
+            //console.log("workoutData")
             workoutData.clearData()
             organizeRawData(workoutDataFromDB, workoutData, 7);
 
@@ -39,12 +40,12 @@ export function WorkoutDataProvider({children}) {
             setWater(workoutData.getWaterData())
             setSleep(workoutData.getSleepData())
             setFood(workoutData.getFoodData())
-            setAlert(true)
+
         });
     }
-    
+    console.log("bench: ", bench)
     return (
-        <WorkoutDataContext.Provider value={{alert, setupDbListener, water, sleep, food, bench, squat, deadLift, run, dbExport}}>{children}</WorkoutDataContext.Provider>
+        <WorkoutDataContext.Provider value={{ setupDbListener, water, sleep, food, bench, squat, deadLift, run, dbExport}}>{children}</WorkoutDataContext.Provider>
     );
 }
 

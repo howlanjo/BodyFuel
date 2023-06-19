@@ -1,9 +1,12 @@
 import {
   Alert,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
+  Touchable,
   View,
 } from "react-native";
 import React, { useState } from "react";
@@ -71,7 +74,14 @@ function DataEntry(props) {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={[styles.centeredView, ]}>
+        <KeyboardAvoidingView style={[styles.centeredView, ]}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}  
+        >
+          <Pressable
+          style = {{ ...StyleSheet.absoluteFillObject, top: 0, bottom: 0, right: 0, left: 0, opacity: 0.25, backgroundColor: 'black'}}
+          onPress = {() => {
+            setModalVisible(false);
+          }}/>        
           <View
             style={[
               styles.modalView,
@@ -92,7 +102,6 @@ function DataEntry(props) {
                 <Text
                   style={[styles.textStyle, { color: "black", fontSize: 24 }]}
                 >
-                  x
                 </Text>
               </Pressable>
             </View>
@@ -105,10 +114,6 @@ function DataEntry(props) {
               value={dateInput}
               onChangeText={(masked, unmasked) => {
                 setDateInput(unmasked); // you can use the unmasked value as well
-
-                // assuming you typed "9" all the way:
-                console.log(masked); // (99) 99999-9999
-                console.log(unmasked); // 99999999999
               }}
               mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
             />
@@ -183,7 +188,7 @@ function DataEntry(props) {
               <Text style={styles.textStyle}>Log Data</Text>
             </Pressable>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
       <Pressable
         style={[styles.button, styles.buttonOpen]}

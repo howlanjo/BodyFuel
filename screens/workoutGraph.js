@@ -13,13 +13,9 @@ import WorkoutDataContext from "../context/workoutContext";
 import { useContext } from "react";
 
 const WorkoutGraph = (userId) => {
-  const {alert, water, sleep, food, bench, squat, deadLift, run} = useContext(WorkoutDataContext)
+  const {water, sleep, food, bench, squat, deadLift, run} = useContext(WorkoutDataContext)
 
-  const [workout, setWorkout] = useState([0])
-
-  const [waterBackup, setWaterBackup] = useState([]);
-  const [sleepBackup, setSleepBackup] = useState([]);
-  const [foodBackup, setFoodBackup] = useState([]);
+  //const [workout, setWorkout] = useState([0])
 
   const [open, setOpen] = useState(false);
   const [workoutList, setWorkoutList] = useState([
@@ -30,31 +26,26 @@ const WorkoutGraph = (userId) => {
   ]);
   const [selectedWorkout, setSelectedWorkout] = useState(1);
 
-  useEffect(() => {
+  const getWorkoutData = () => {
       console.log("dropdown picker callback")
       switch (selectedWorkout) {
         case 1:
           console.log("Case 1")
-          setWorkout(bench)
-          break;
+          return bench
         case 2:
           console.log("Case 2")
-          setWorkout(squat)
-          break;
+          return squat
         case 3:
           console.log("Case 3")
-          setWorkout(deadLift)
-          break;
+          return deadLift
         case 4:
           console.log("Case 4")
-          setWorkout(run)
-          break;
+          return run
 
         default:
-          setWeight([0])
-          break;
+          return [0]
       }
-  }, [selectedWorkout, alert]);
+  };
 
   return (
     <View>
@@ -63,9 +54,10 @@ const WorkoutGraph = (userId) => {
           //labels: days,
           datasets: [
             {
-              data: workout,
+              data: getWorkoutData(),
               strokeWidth: 2,
               color: (opacity = 1) => `rgba(255,0,0,${opacity})`, // optional
+              
             },
           ],
         }}

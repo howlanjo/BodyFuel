@@ -53,6 +53,7 @@ export class FirebaseClass {
     console.log("You are setting up the listener right now")
     const db = getDatabase();
     const reference = ref(db, `bodyfuel/${this.uid}/workoutData`);
+
     onValue(reference, (snapshot) => {
       console.log("Just inside onValue")
       const fbObject = snapshot.val();
@@ -81,5 +82,26 @@ export class FirebaseClass {
     const reference = ref(db, `bodyfuel/${this.uid}/workoutData/${item.date}`);
     remove(reference);
 
+  }
+
+  initializeDb(uid){
+    console.log("initializing database")
+    const db = getDatabase();
+    const reference = ref(db, `bodyfuel/${uid}/workoutData/00000000`);
+    console.log("Before push")
+    push(reference, {
+      date: 0,
+      bench: 0,
+      squat: 0,
+      deadLift: 0,
+      run: 0,
+      water: 0,
+      food: 0,
+      sleep: 0,
+    })
+    .then(() => {
+      console.log("Set wrote successfully")
+    })
+    console.log("After push")
   }
 } 

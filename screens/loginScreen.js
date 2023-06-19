@@ -1,20 +1,20 @@
+import { Image, ListItem } from "react-native-elements";
+import React, { useContext, useEffect, useState } from "react";
 import {
-  FlatList,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { Image, ListItem } from "react-native-elements";
-import React, { useEffect, useState } from "react";
 
+import FirebaseContext from "../context/firebaseContext";
 import { auth } from "../helper/firebaseConfig";
-import { initBodyFuelDB } from "../helper/firebaseHelper";
 
 const LoginScreen = ({ navigation, route }) => {
   const [email, setEmail] = useState("me@test.com");
   const [password, setPassword] = useState("password");
+  const { fb } = useContext(FirebaseContext);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -32,7 +32,8 @@ const LoginScreen = ({ navigation, route }) => {
       .createUserWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log("Registered with:", user.email);
+        console.log("right before initializedb")
+        fb.initializeDb(user.uid)
       })
       .catch((error) => alert(error.message));
   };

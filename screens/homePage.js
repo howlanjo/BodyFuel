@@ -25,8 +25,11 @@ const HomePage = ({ navigation, route }) => {
   
  
   useEffect(() => {
+
     if (route.params?.uid != "undefined") {
+      console.log("setting uid     ", route.params?.newRegister)
       fb.insertUid(route.params.uid)
+    
       setupDbListener()
     }
     

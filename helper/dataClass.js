@@ -29,7 +29,7 @@ export class WorkoutDataBase {
     }
 
     clearData(){
-        this.clearData = []
+        this.dataByDate = []
     }
 
     insertData(newData, date){

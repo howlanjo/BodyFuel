@@ -36,6 +36,13 @@ export class FirebaseClass {
   });
 }
 
+setBodyFuelUserData(userInfo){
+  const db = getDatabase();
+  const reference = ref(db, `bodyfuel/${this.uid}/userInfo`);
+  set(ref, userInfo)
+  .then(console.log("Updated successfully."))
+}
+
   getBodyFuelWorkoutData(updateFunc) {
     const dbRef = ref(getDatabase());
     get(child(dbRef, `bodyfuel/${this.uid}/workoutData`)).then((snapshot) => {
@@ -65,16 +72,12 @@ export class FirebaseClass {
 }
 
   storeBodyFuelDataset(key, item) {
-    console.log("key: ", key)
-    console.log("item: ", item)
     const db = getDatabase();
     const reference = ref(db, `bodyfuel/${this.uid}/workoutData/${key}`);
-    console.log("Before push")
     push(reference, item)
     .then(() => {
       console.log("Set wrote successfully")
     })
-    console.log("After push")
   }
 
   deleteBodyFuelDataset(item) {

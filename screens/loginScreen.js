@@ -19,7 +19,6 @@ const LoginScreen = ({ navigation, route }) => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        //console.log("User: ", user);
         navigation.replace("Home Page", { uid: user.uid });
       }
     });
@@ -50,8 +49,13 @@ const LoginScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.screen}>
+      <Image
+            style={[{ margin: 10, width: 800, height: 140 }]}
+            source={require("../assets/logo.png")}
+      />
+
       <TextInput
-        style={styles.textFields}
+        style={[styles.textFields]}
         placeholder="Email"
         onChangeText={(text) => setEmail(text)}
         value={email}
@@ -63,11 +67,19 @@ const LoginScreen = ({ navigation, route }) => {
         onChangeText={(text) => setPassword(text)}
         secureTextEntry={true}
       />
-      <TouchableOpacity>
-        <Text onPress={handleLogin}>Login</Text>
+      <TouchableOpacity
+        style= {styles.button}
+      >
+        <Text 
+        style={[styles.buttonText]}
+        onPress={handleLogin}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Text onPress={handleSignUp}>Register</Text>
+      <TouchableOpacity
+      style= {styles.button}
+      >
+        <Text 
+        style={[styles.buttonText, {fontSize: 14}]}
+        onPress={handleSignUp}>Register</Text>
       </TouchableOpacity>
     </View>
   );
@@ -82,10 +94,21 @@ const styles = StyleSheet.create({
   textFields: {
     fontSize: 22,
     backgroundColor: "white",
+    width: 200
   },
   button: {
-    fontSize: 24,
+    backgroundColor: "#2196F3",
+    margin: 3,
+    padding: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 25
   },
+  buttonText: {
+    fontSize: 24,
+    color: 'white'
+
+  }
 });
 
 export default LoginScreen;

@@ -6,10 +6,10 @@ import {
   View,
 } from "react-native";
 
-import DataEntry from "./dataEntry";
+import DataEntry from "../components/dataEntry";
 import FirebaseContext from "../context/firebaseContext";
 import WorkoutDataContext from "../context/workoutContext";
-import WorkoutGraph from "./workoutGraph";
+import WorkoutGraph from "../components/workoutGraph";
 import {
   getBodyFuelUserData
 } from "../helper/firebaseHelper";
@@ -41,17 +41,6 @@ const HomePage = ({ navigation, route }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      // headerLeft: () => (
-      //   <TouchableOpacity
-      //     onPress={() => {
-      //       console.log("Settings page");
-      //       navigation.navigate("User Settings");
-      //     }}
-      //   >
-      //     <Text style={{ color: "black", fontSize: 18 }}>Settings</Text>
-      //   </TouchableOpacity>
-      // ),
-
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {

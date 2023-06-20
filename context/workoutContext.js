@@ -18,14 +18,14 @@ export function WorkoutDataProvider({children}) {
     const [sleep, setSleep] = useState([0]);
     const [food, setFood] = useState([0]);
     const [dbExport, setDbExport] = useState([0]);
-    console.log("-----------Up here--------------")
 
     const setupDbListener = () => {
         fb.SetupBodyFuelWorkoutDataListner((workoutDataFromDB) => {
-            setDbExport(workoutDataFromDB);
+            
             //console.log("workoutData")
             workoutData.clearData()
             organizeRawData(workoutDataFromDB, workoutData, 7);
+            setDbExport(workoutData);
 
             console.log("Setting bench to: ", workoutData.getBenchData())
             console.log("Setting squat to: ", workoutData.getSquatData())

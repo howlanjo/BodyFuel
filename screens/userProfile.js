@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 
 import FirebaseContext from "../context/firebaseContext";
 import { Image } from "react-native-elements";
-import UserFeed from "./UserFeed";
+import UserFeed from "../components/UserFeed";
 import { useContext } from "react";
 
 const UserProfile = ({ navigation, route }) => {

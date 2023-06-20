@@ -169,7 +169,7 @@ function DataEntry(props) {
             />
 
             <Pressable
-              style={[styles.button, {backgroundColor: "#2196F3", alignSelf: 'center'}]}
+              style={[styles.button, {alignSelf: 'center'}]}
               onPress={() => {
                 setModalVisible(!modalVisible);
                 saveAndStoreData();
@@ -218,22 +218,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    backgroundColor: "#2196F3"
   },
-  // buttonOpen: {
-  //   backgroundColor: "#F194FF",
-  // },
-  // buttonClose: {
-  //   backgroundColor: "#2196F3",
-  // },
-  // textStyle: {
-  //   color: "white",
-  //   fontWeight: "bold",
-  //   textAlign: "center",
-  // },
-  // modalText: {
-  //   marginBottom: 15,
-  //   textAlign: "center",
-  // },
   numberField: {
     marginLeft: 5,
     marginRight: 5,

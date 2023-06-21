@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,15 +10,8 @@ import DataEntry from "../components/dataEntry";
 import FirebaseContext from "../context/firebaseContext";
 import WorkoutDataContext from "../context/workoutContext";
 import WorkoutGraph from "../components/workoutGraph";
-import {
-  getBodyFuelUserData
-} from "../helper/firebaseHelper";
-import { organizeRawData } from "../helper/dataOrganization";
-import { useContext } from "react";
-import { useEffect } from "react";
 
 const HomePage = ({ navigation, route }) => {
-  const [modalVisible, setModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const {fb} = useContext(FirebaseContext)
   const {setupDbListener} = useContext(WorkoutDataContext)

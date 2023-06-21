@@ -115,4 +115,13 @@ export class WorkoutDataBase {
 
         return foodArr
     }
+
+    getDates(){
+        let foodArr = []
+        for (const item of this.dataByDate){
+            foodArr.push(item.date.slice(2,4))
+        }
+
+        return foodArr
+    }
 }

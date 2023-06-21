@@ -16,6 +16,7 @@ const UserProfile = ({ navigation, route }) => {
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
   const [bio, setBio] = useState("");
+  const [editMode, setEditMode] = useState(false)
   const {fb} = useContext(FirebaseContext);
 
   useEffect(() => {
@@ -24,6 +25,13 @@ const UserProfile = ({ navigation, route }) => {
     setBio(route.params.userInfo.bio);
 
   }, [route.params.userInfo])
+
+  const getEditText = () => {
+    if (editMode === false){
+      return "Edit"
+    }
+    return "Update"
+  }
 
   return (
     <View style={styles.borders}>
@@ -49,18 +57,18 @@ const UserProfile = ({ navigation, route }) => {
           }}
         >
           <TextInput
-            style={styles.title}
+            style={[styles.title, {backgroundColor: (editMode === false) ? 'transparent':'#D3D3D3'}]}
             value={first}
             onChangeText={setFirst}
           />
           <TextInput
-            style={styles.title}
+            style={[styles.title, {backgroundColor: (editMode === false) ? 'transparent':'#D3D3D3'}]}
             value={last}
             onChangeText={setLast}
           />
 
           <TextInput 
-            style={styles.body} 
+            style={[styles.body, {backgroundColor: (editMode === false) ? 'transparent':'#D3D3D3'}]} 
             value={bio} 
             onChangeText={setBio}
           />
@@ -75,10 +83,14 @@ const UserProfile = ({ navigation, route }) => {
           <Pressable
             style={[styles.button, styles.buttonOpen]}
             onPress={() => {
-              fb.setBodyFuelUserData({bio: bio, firstName: first, lastName: last})
+              if(editMode === true){
+                fb.setBodyFuelUserData({bio: bio, firstName: first, lastName: last})
+              }
+
+              setEditMode(!editMode)
             }}
           >
-            <Text style={styles.textStyle}>Update</Text>
+          <Text style={styles.textStyle}>{getEditText()}</Text>
           </Pressable>
         </View>
       </View>
@@ -115,12 +127,17 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+    fontSize: 11
   },
   title: {
     fontSize: 24,
+    marginBottom: 5,
+    paddingLeft: 5
   },
   body: {
     fontSize: 16,
+    marginBottom: 5,
+    paddingLeft: 5
   },
 });
 

@@ -18,11 +18,11 @@ export function WorkoutDataProvider({children}) {
     const [sleep, setSleep] = useState([0]);
     const [food, setFood] = useState([0]);
     const [dbExport, setDbExport] = useState([0]);
+    const [labels, setLabels] = useState([0]);
 
     const setupDbListener = () => {
         fb.SetupBodyFuelWorkoutDataListner((workoutDataFromDB) => {
             
-            //console.log("workoutData")
             workoutData.clearData()
             organizeRawData(workoutDataFromDB, workoutData, 7);
             setDbExport(workoutData);
@@ -40,12 +40,13 @@ export function WorkoutDataProvider({children}) {
             setWater(workoutData.getWaterData())
             setSleep(workoutData.getSleepData())
             setFood(workoutData.getFoodData())
+            setLabels(workoutData.getDates())
 
         });
     }
     console.log("bench: ", bench)
     return (
-        <WorkoutDataContext.Provider value={{ setupDbListener, water, sleep, food, bench, squat, deadLift, run, dbExport}}>{children}</WorkoutDataContext.Provider>
+        <WorkoutDataContext.Provider value={{ setupDbListener, water, sleep, food, bench, squat, deadLift, run, labels, dbExport}}>{children}</WorkoutDataContext.Provider>
     );
 }
 

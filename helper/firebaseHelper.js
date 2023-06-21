@@ -39,14 +39,12 @@ export class FirebaseClass {
 setBodyFuelUserData(userInfo){
   const db = getDatabase();
   const reference = ref(db, `bodyfuel/${this.uid}/userInfo`);
-  set(ref, userInfo)
-  .then(console.log("Updated successfully."))
+  set(reference, userInfo)
 }
 
   getBodyFuelWorkoutData(updateFunc) {
     const dbRef = ref(getDatabase());
     get(child(dbRef, `bodyfuel/${this.uid}/workoutData`)).then((snapshot) => {
-      console.log("CLASS!! -- setupBodyFuelListener fires up with: ", snapshot);
       if(snapshot?.val()){
         const fbObject = snapshot.val();
         updateFunc(fbObject);
@@ -57,16 +55,12 @@ setBodyFuelUserData(userInfo){
   }
 
   SetupBodyFuelWorkoutDataListner(updateFunc){
-    console.log("You are setting up the listener right now")
     const db = getDatabase();
     const reference = ref(db, `bodyfuel/${this.uid}/workoutData`);
 
     onValue(reference, (snapshot) => {
-      console.log("Just inside onValue")
       const fbObject = snapshot.val();
-      console.log("Got snapshot")
       updateFunc(fbObject);
-      console.log("updated the func")
       return snapshot;
   });
 }
@@ -90,9 +84,8 @@ setBodyFuelUserData(userInfo){
   initializeDb(uid){
     console.log("initializing database")
     const db = getDatabase();
-    const reference = ref(db, `bodyfuel/${uid}/workoutData/00000000`);
-    console.log("Before push")
-    push(reference, {
+    const workoutReference = ref(db, `bodyfuel/${uid}/workoutData/00000000`);
+    push(workoutReference, {
       date: 0,
       bench: 0,
       squat: 0,
@@ -105,6 +98,12 @@ setBodyFuelUserData(userInfo){
     .then(() => {
       console.log("Set wrote successfully")
     })
-    console.log("After push")
+
+    const userReference = ref(db, `bodyfuel/${uid}/userInfo`);
+    set(userReference, {
+      bio: "This is the stock bio",
+      firstName: "<first name>",
+      lastName: "<last name>"
+    })
   }
 } 

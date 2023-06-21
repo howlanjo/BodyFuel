@@ -47,21 +47,31 @@ function DataEntry(props) {
       sleep: (sleepInput != "") ? sleepInput : 0,
     });
   };
-  const [selectedFood, setSelectedFood] = useState();
+  const [selectedFood, setSelectedFood] = useState(0);
   const [foodItems, setFoodItems] = useState([
+    { label: "Select an item", value: 0 },
     { label: "Poor", value: 1 },
     { label: "Okay", value: 2 },
     { label: "Good", value: 3 },
     { label: "Great", value: 4},
   ]);
 
-  const [selectedWorkout, setSelectedWorkout] = useState();
+  const [selectedWorkout, setSelectedWorkout] = useState(0);
   const [workoutList, setWorkoutList] = useState([
+    { label: "Select an item", value: 0 },
     { label: "Bench", value: 1 },
     { label: "Squat", value: 2 },
     { label: "DeadLift", value: 3 },
     { label: "Run", value: 4},
   ]);
+
+  const resetView = () => {
+    setWorkoutInput("")
+    setWaterInput("")
+    setSleepInput("")
+    setSelectedWorkout(0)
+    setSelectedFood(0)
+  }
 
   return (
     <View style={[styles.centeredView, { paddingBottom: 10, paddingLeft: 10 }]}>
@@ -86,24 +96,6 @@ function DataEntry(props) {
           <View
             style={styles.modalView}
           >
-            {/* <View
-              style={{
-                alignItems: "flex-end",
-                justifyContent: "flex-end",
-                flexDirection: "row",
-              }}
-            >
-              <Pressable
-                style={[styles.button]}
-                onPress={() => setModalVisible(false)}
-              >
-                <Text
-                  style={[styles.textStyle, { color: "black", fontSize: 24 }]}
-                >
-                </Text>
-              </Pressable>
-            </View> */}
-
             <MaskInput
               style={[
                 styles.numberField,
@@ -127,12 +119,11 @@ function DataEntry(props) {
                 setItems={setWorkoutList}
                 
                 style={{zIndex:3}} 
-                
               />
 
               <Input
                 style={[styles.numberField, {width: '50%'}]}
-                placeholder="Enter Weight"
+                placeholder="Weight (lbs)"
                 value={workoutInput}
                 onChangeText={setWorkoutInput}
                 keyboardType="numeric"
@@ -142,7 +133,7 @@ function DataEntry(props) {
             
             <Input
               style={styles.numberField}
-              placeholder="Enter Water"
+              placeholder="Water (oz)"
               value={waterInput}
               onChangeText={setWaterInput}
               keyboardType="numeric"
@@ -162,7 +153,7 @@ function DataEntry(props) {
 
             <Input
               style={styles.numberField}
-              placeholder="Enter Sleep (hr)"
+              placeholder="Sleep (hr)"
               value={sleepInput}
               onChangeText={setSleepInput}
               keyboardType="numeric"
@@ -173,6 +164,7 @@ function DataEntry(props) {
               onPress={() => {
                 setModalVisible(!modalVisible);
                 saveAndStoreData();
+                resetView()
               }}
             >
               <Text style={styles.textStyle}>Log Data</Text>

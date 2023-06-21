@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { useState } from "react";
 
 const WorkoutGraph = (userId) => {
-  const { water, sleep, food, bench, squat, deadLift, run } =
+  const { water, sleep, food, bench, squat, deadLift, run, labels } =
     useContext(WorkoutDataContext);
 
   const [open, setOpen] = useState(false);
@@ -44,7 +44,7 @@ const WorkoutGraph = (userId) => {
     <View>
       <LineChart
         data={{
-          //labels: days,
+          labels: labels,
           datasets: [
             {
               data: getWorkoutData(),
@@ -53,8 +53,9 @@ const WorkoutGraph = (userId) => {
             },
           ],
         }}
+        
         width={Dimensions.get("window").width - 20} // from react-native
-        height={300}
+        height={(Dimensions.get("window").height/3)} 
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
           backgroundColor: "#a26a00",
@@ -69,6 +70,7 @@ const WorkoutGraph = (userId) => {
           propsForDots: {
             r: "6",
           },
+          propsForLabels:{fontSize: 15},
         }}
         bezier
         style={{
@@ -78,12 +80,13 @@ const WorkoutGraph = (userId) => {
       />
       <LineChart
         data={{
-          //labels: days,
+          labels: labels,
           datasets: [
             {
               data: sleep,
               strokeWidth: 2,
               color: (opacity = 1) => `rgba(0,0,0, ${opacity})`, // optional
+              
             },
             {
               data: food,
@@ -96,9 +99,11 @@ const WorkoutGraph = (userId) => {
               color: (opacity = 1) => `rgba(0,255,0, ${opacity})`, // optional
             },
           ],
+          
+          legend: ["Sleep (hr)", "Food", "Water (oz)"] // optional
         }}
         width={Dimensions.get("window").width - 20} // from react-native
-        height={300}
+        height={(Dimensions.get("window").height/3)} 
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
           backgroundColor: "#a26a00",
@@ -113,8 +118,8 @@ const WorkoutGraph = (userId) => {
           propsForDots: {
             r: "6",
             strokeWidth: "2",
-            //stroke: "#ffa726"
           },
+          propsForLabels:{fontSize: 15},
         }}
         bezier
         style={{

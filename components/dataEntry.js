@@ -109,7 +109,7 @@ function DataEntry(props) {
             />
 
             <Text>Enter Workout</Text>
-            <View style={{flexDirection: 'row', width:'50%', zIndex:(open2===truex)?2:1}}>
+            <View style={{flexDirection: 'row', width:'50%', zIndex:(open2===true)?2:1}}>
               <DropDownPicker
                 open={open2}
                 value={selectedWorkout}

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "BodyFuel",
-    "slug": "BodyFuel",
+    "slug": "body-fuel",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "93608d8a-cfbd-4cfe-8820-94bfd1ed7fee"
+      }
+    },
+    "owner": "johnhowland"
   }
 }

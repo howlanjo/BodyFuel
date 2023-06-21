@@ -109,7 +109,7 @@ function DataEntry(props) {
             />
 
             <Text>Enter Workout</Text>
-            <View style={{flexDirection: 'row', width:'50%', zIndex: 4}}>
+            <View style={{flexDirection: 'row', width:'50%', zIndex:(open2===truex)?2:1}}>
               <DropDownPicker
                 open={open2}
                 value={selectedWorkout}
@@ -118,7 +118,7 @@ function DataEntry(props) {
                 setValue={setSelectedWorkout}
                 setItems={setWorkoutList}
                 
-                style={{zIndex:3}} 
+                //style={{zIndex:3}} 
               />
 
               <Input
@@ -130,15 +130,8 @@ function DataEntry(props) {
                 
               />
             </View>
-            
-            <Input
-              style={styles.numberField}
-              placeholder="Water (oz)"
-              value={waterInput}
-              onChangeText={setWaterInput}
-              keyboardType="numeric"
-            />
-            <View>
+
+            <View style={{zIndex:(open===true)?2:1}}>
             <Text>Select Food</Text>
             <DropDownPicker
               open={open}
@@ -147,9 +140,17 @@ function DataEntry(props) {
               setOpen={setOpen}
               setValue={setSelectedFood}
               setItems={setFoodItems}
-              style={{zIndex:1}}
+              //style={{zIndex:2}}
             />
             </View>
+            
+            <Input
+              style={styles.numberField}
+              placeholder="Water (oz)"
+              value={waterInput}
+              onChangeText={setWaterInput}
+              keyboardType="numeric"
+            />
 
             <Input
               style={styles.numberField}
